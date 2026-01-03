@@ -1,8 +1,8 @@
 import { Link } from "react-router";
 
-function BoxCard({ title, type }) {
+function BoxCard({ title }) {
   return (
-    <Link to={`/generator/${type}`} style={{ textDecoration: "none" }}>
+    <Link to={`/generator/${title}`} style={{ textDecoration: "none" }}>
       <div
         style={{
           background: "#A9DC97",

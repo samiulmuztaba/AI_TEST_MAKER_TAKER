@@ -28,7 +28,7 @@ function HomePage() {
           }}
         >
           {boxes.map((box) => (
-            <BoxCard key={box.id} title={box.title} type={box.type} />
+            <BoxCard key={box.id} title={box.title} />
           ))}
         </div>
       </div>

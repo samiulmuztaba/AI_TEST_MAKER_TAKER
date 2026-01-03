@@ -1,11 +1,12 @@
 import { useParams } from 'react-router'; // Changed import
+import Titles from '../components/Titles';
 
 function GeneratorPage() {
-  const { type } = useParams();
+  const { title } = useParams();
 
   return (
     <div style={{ padding: '20px' }}>
-      <h1>Generator: {type}</h1>
+      <Titles title={title} />
       <p>Prompt input and button will go here</p>
     </div>
   );
