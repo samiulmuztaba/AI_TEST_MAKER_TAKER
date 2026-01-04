@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Titles from "../components/Titles";
 import CancelCross from "../components/CancelCross";
+import { Link } from "react-router";
 
 function Bengali1stInterface() {
   const [selectedChapters, setSelectedChapters] = useState([]);
@@ -237,6 +238,7 @@ function Bengali1stInterface() {
         </div>
 
         {/* Generate Button */}
+        <Link to={'/generating/0.50'} style={{textDecoration: "none"}}>
         <div style={{ textAlign: "center", marginTop: "45px" }}>
           <button
             style={{
@@ -257,6 +259,7 @@ function Bengali1stInterface() {
             <span style={{ fontSize: "1.3rem" }}>→</span>
           </button>
         </div>
+        </Link>
       </div>
 
       {/* Popup Modal */}
