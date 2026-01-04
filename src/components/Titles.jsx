@@ -1,6 +1,6 @@
 function Titles({ title }) {
   return (
-    <div style={{ display: "flex", justifyContent: "center", margin: "0 auto 40px auto" }}>
+    <div style={{ display: "flex", justifyContent: "center", }}>
       <div
         style={{
           background: "#A9DC97",

@@ -61,7 +61,7 @@ function HomePage() {
             fontSize: "2.5rem",
             transform: "scaleX(1.5)",
             display: "inline-block",
-            fontWeight: "300",
+            fontWeight: "100",
           }}
         >
           ⇝

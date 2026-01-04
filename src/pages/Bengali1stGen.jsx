@@ -9,13 +9,13 @@ function Bengali1stInterface() {
   const [showPopup, setShowPopup] = useState(false);
 
   const chapters = [
-    "অনুশীলন",
-    "সূত্র",
-    "আমি-আমির ভেড়া",
+    "প্রত্যুপ্রকার",
+    "সুভা",
+    "আমি-আঁটির ভেঁপু",
     "বই পড়া",
     "জীবন বিনিময়",
     "উমর ফারুক",
-    "সেপ্টিম এই মাটি",
+    "সেইদিন এই মাঠ",
   ];
 
   const moreChapters = [
@@ -66,7 +66,7 @@ function Bengali1stInterface() {
               fontWeight: "bold",
             }}
           >
-            Select chapters:
+            Select Chapters:
           </p>
           <div
             style={{
