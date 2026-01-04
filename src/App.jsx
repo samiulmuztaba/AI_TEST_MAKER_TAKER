@@ -7,7 +7,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/generator/:title" element={<GeneratorPage />} />
+        <Route path="/generator/:type" element={<GeneratorPage />} />
       </Routes>
     </BrowserRouter>
   );

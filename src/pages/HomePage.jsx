@@ -4,10 +4,10 @@ import Titles from "../components/Titles";
 
 function HomePage() {
   const boxes = [
-    { id: 1, title: "Bengali 1st", type: "gen1" },
-    { id: 2, title: "Bengali 2nd", type: "gen2" },
-    { id: 3, title: "English 1st", type: "gen3" },
-    { id: 4, title: "English 2nd", type: "gen4" },
+    { id: 1, title: "Bengali 1st", type: "bengali-1st" },
+    { id: 2, title: "Bengali 2nd", type: "bengali-2nd" },
+    { id: 3, title: "English 1st", type: "english-1st" },
+    { id: 4, title: "English 2nd", type: "english-2nd" },
   ];
 
   return (
@@ -28,7 +28,7 @@ function HomePage() {
           }}
         >
           {boxes.map((box) => (
-            <BoxCard key={box.id} title={box.title} />
+            <BoxCard key={box.id} title={box.title} type={box.type} />
           ))}
         </div>
       </div>
