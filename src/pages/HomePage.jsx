@@ -87,7 +87,6 @@ function HomePage() {
           Score my Answer
         </button>
       </div>
-      <Link to={"/testpage"}>GO TO TEST PAGE!</Link>
     </div>
   );
 }
