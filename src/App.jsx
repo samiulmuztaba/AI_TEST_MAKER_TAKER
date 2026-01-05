@@ -4,7 +4,7 @@ import GeneratorPage from './pages/GeneratorPage';
 import LoadingAnimation from './pages/GenLoadingAnimation';
 import BenGenerated from './pages/BenGenerated';
 import BenAnalysis from './pages/BenAnalysis';
-import testPage from './pages/testPage';
+import TestPage from './pages/testPage';
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
         <Route path="/generating/:percentage" element={<LoadingAnimation />} />
         <Route path='/bengenerated' element={<BenGenerated/>}/>
         <Route path='/benanalysis' element={<BenAnalysis/>}/>
-        <Route path='/testpage' element={<testPage/>}/>
+        <Route path='/testpage' element={<TestPage/>}/>
       </Routes>
     </BrowserRouter>
   );
