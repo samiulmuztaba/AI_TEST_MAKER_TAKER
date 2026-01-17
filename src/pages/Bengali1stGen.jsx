@@ -3,6 +3,8 @@ import Titles from "../components/Titles";
 import CancelCross from "../components/CancelCross";
 import { InferenceClient } from "@huggingface/inference";
 import LoadingAnimation from "./LoadingAnimation";
+import ReactMarkdown from 'react-markdown';
+import GeneratedItem from "./GeneratedItem";
 
 function Bengali1stInterface() {
   const [selectedChapters, setSelectedChapters] = useState([]);
@@ -64,15 +66,21 @@ function Bengali1stInterface() {
     try {
       const client = new InferenceClient(import.meta.env.VITE_HF_TOKEN);
 
-      const chatCompletion = await client.chatCompletion({
-        model: "deepseek-ai/DeepSeek-R1",
-        messages: [
-          {
-            role: "user",
-            content: `Generate questions for chapters: ${selectedChapters.join(", ")} and types: ${selectedTypes.join(", ")}`,
-          },
-        ],
-      });
+      const chatCompletion = await client.chatCompletion(
+        {
+          model: "google/gemma-3-27b-it",
+          messages: [
+            {
+              role: "user",
+              content: "10 reasons not to tell a lie again",
+            },
+          ],
+        },
+        {
+          use_cache: false,
+          wait_for_model: true,
+        },
+      );
 
       setResponse(chatCompletion.choices[0].message.content);
       clearInterval(progressInterval);
@@ -86,6 +94,8 @@ function Bengali1stInterface() {
     }
   };
 
+console.log(response ? response: "")
+
   return (
     <div
       style={{
@@ -97,10 +107,10 @@ function Bengali1stInterface() {
       }}
     >
       <CancelCross />
-      
+
       {loading ? (
         <LoadingAnimation percentage={progress} />
-      ) : (
+      ) : !response ? (
         <div style={{ maxWidth: "600px", width: "100%" }}>
           <Titles title="Bengali 1st" />
 
@@ -316,7 +326,9 @@ function Bengali1stInterface() {
             </button>
           </div>
         </div>
-      )}
+      ): 
+      <GeneratedItem response={response}/>
+      }
 
       {/* Popup Modal */}
       {showPopup && (

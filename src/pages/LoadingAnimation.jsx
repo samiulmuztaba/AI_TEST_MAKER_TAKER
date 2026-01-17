@@ -1,6 +1,8 @@
+import { useParams } from "react-router";
 import CancelCross from "../components/CancelCross";
 
-function LoadingAnimation({ percentage }) {
+function LoadingAnimation(props) {
+  const { percentage } = props.percentage
   const text = "GENERATED";
   const totalLetters = text.length;
 
@@ -19,18 +21,18 @@ function LoadingAnimation({ percentage }) {
         justifyContent: "center",
         padding: "40px",
         width: "inherit",
-        minHeight: "80vh",
+        height: "80vh",
         fontFamily: "Irish Grover",
       }}
     >
-      <div style={{ maxWidth: "766px", width: "100%" }}>
+      <CancelCross />
+      <div style={{width: "766px",}}>
         <div
           style={{
             display: "flex",
             gap: "8px",
             margin: "0",
-            flexWrap: "wrap",
-            justifyContent: "center",
+            // marginBottom: "20px",
           }}
         >
           {text.split("").map((letter, index) => (
