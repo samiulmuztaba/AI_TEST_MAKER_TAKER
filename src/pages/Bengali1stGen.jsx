@@ -72,7 +72,7 @@ function Bengali1stInterface() {
           messages: [
             {
               role: "user",
-              content: "10 reasons not to tell a lie again",
+              content: "10 reasons not to tell a lie",
             },
           ],
         },
