@@ -15,6 +15,32 @@ export default function TagQuestion() {
   const [userAnswer, setUserAnswer] = useState("");
   const [isAnswerCorrect, setIsAnswerCorrect] = useState(0);
 
+
+  const handleSubmit = () => {
+    if (userAnswer.trim().toLowerCase() === answers[currentQuestionIndex]) {
+      setIsAnswerCorrect(true);
+    } else {
+      setIsAnswerCorrect(false);
+    }
+  };
+
+  const handleNextQuestion = () => {
+    setUserAnswer("");
+    setIsAnswerCorrect(0);
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else {
+      alert("All questions completed!");
+      setCurrentQuestionIndex(0);
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSubmit();
+    }
+  };
+
   return (
     <div>
       <CancelCross />
