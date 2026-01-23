@@ -1,4 +1,4 @@
-function Titles({ title }) {
+function Titles({ title, margin }) {
   return (
     <div style={{ display: "flex", justifyContent: "center", }}>
       <div
@@ -8,6 +8,7 @@ function Titles({ title }) {
           display: "inline-flex",
           alignItems: "center",
           justifyContent: "center",
+          ...(margin && {marginTop: "100px"})
         }}
       >
         <h1
