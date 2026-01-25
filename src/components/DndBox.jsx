@@ -1,16 +1,3 @@
-// export default function DndBox({content}) {
-//   return (
-//     <div style={{
-//         padding: "5px 10px",
-//         borderRadius: "15px",
-//         width: "fit-content",
-//         background: "#A9DC97"
-//     }}>
-//       {content}
-//     </div>
-//   );
-// }
-
 export default function DndBox({ content, onDragStart, isDraggable = true }) {
   return (
     <div
