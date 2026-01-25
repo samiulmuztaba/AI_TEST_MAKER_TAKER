@@ -13,20 +13,20 @@ export default function TagQuestion() {
   const answers = ["isn't it", "is it", "will you", "aren't I"];
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswer, setUserAnswer] = useState("");
-  const [isAnswerCorrect, setIsAnswerCorrect] = useState(0);
+  const [isAnswerCorrect, setIsAnswerCorrect] = useState("idle");
 
 
   const handleSubmit = () => {
     if (userAnswer.trim().toLowerCase() === answers[currentQuestionIndex]) {
-      setIsAnswerCorrect(true);
+      setIsAnswerCorrect("correct");
     } else {
-      setIsAnswerCorrect(false);
+      setIsAnswerCorrect("wrong");
     }
   };
 
   const handleNextQuestion = () => {
     setUserAnswer("");
-    setIsAnswerCorrect(0);
+    setIsAnswerCorrect("idle");
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
@@ -73,10 +73,10 @@ export default function TagQuestion() {
               marginBottom: "20px",
             }}
           >
-            {questions[currentQuestionIndex]}, ______?
+            {questions[currentQuestionIndex]}, {isAnswerCorrect == "idle" ? "______": <span style={{textDecoration: "underline", color: ( isAnswerCorrect == "correct" ? "#C7C369" : "#F5745D")}}>{userAnswer}</span>} ?
           </h3>
 
-          {isAnswerCorrect === 0 ? (
+          {isAnswerCorrect == "idle" ? (
             <div
               style={{
                 display: "flex",
@@ -107,7 +107,7 @@ export default function TagQuestion() {
                 →
               </button>
             </div>
-          ) : isAnswerCorrect ? (
+          ) : isAnswerCorrect == "correct" ? (
             <div
               style={{
                 display: "flex",
@@ -190,7 +190,7 @@ export default function TagQuestion() {
               <button
                 onClick={() => {
                   setUserAnswer("");
-                  setIsAnswerCorrect(0);
+                  setIsAnswerCorrect("idle");
                 }}
                 style={{
                   padding: "10px 20px",
