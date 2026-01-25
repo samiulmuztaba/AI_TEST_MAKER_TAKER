@@ -4,6 +4,8 @@ export default function DndBox({ content, onDragStart, isDraggable = true }) {
       draggable={isDraggable}
       onDragStart={(e) => isDraggable && onDragStart && onDragStart(e, content)}
       style={{
+        fontFamily: "Indie Flower",
+        // fontSize: "1.3rem",
         padding: "5px 10px",
         borderRadius: "15px",
         width: "fit-content",
