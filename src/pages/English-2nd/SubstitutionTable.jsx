@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Titles from "../../components/Titles";
 import CancelCross from "../../components/CancelCross";
-import DndBox from "../../components/DndBox";
+import DraggableBox from "../../components/DraggableBox";
 
 export default function SubstitutionTable() {
   const column1 = ["Education", "It", "Nobody", "The purpose of education"];
@@ -121,7 +121,7 @@ export default function SubstitutionTable() {
           }}
         >
           {column1.map((content, index) => (
-            <DndBox
+            <DraggableBox
               key={index}
               content={content}
               onDragStart={handleDragStart}
@@ -139,7 +139,7 @@ export default function SubstitutionTable() {
           }}
         >
           {column2.map((content, index) => (
-            <DndBox
+            <DraggableBox
               key={index}
               content={content}
               onDragStart={handleDragStart}
@@ -156,7 +156,7 @@ export default function SubstitutionTable() {
           }}
         >
           {column3.map((content, index) => (
-            <DndBox
+            <DraggableBox
               key={index}
               content={content}
               onDragStart={handleDragStart}
@@ -208,7 +208,7 @@ export default function SubstitutionTable() {
                     onClick={() => removeWord(sentence.id, index)}
                     style={{ cursor: "pointer" }}
                   >
-                    <DndBox content={part} isDraggable={false} />
+                    <DraggableBox content={part} isDraggable={false} />
                   </div>
                 ))}
               </div>
