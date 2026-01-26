@@ -1,7 +1,63 @@
 import { useState, useEffect } from "react";
 import Titles from "../../components/Titles";
 import CancelCross from "../../components/CancelCross";
-import DraggableBox from "../../components/DraggableBox";
+import { DndContext, DragOverlay, useDraggable, useDroppable } from '@dnd-kit/core';
+
+// Draggable word from columns
+function DraggableWord({ id, content }) {
+  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+    id: id,
+    data: { content }, // Pass content in data
+  });
+
+  const style = {
+    transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
+    opacity: isDragging ? 0.5 : 1,
+    fontFamily: "Indie Flower",
+    fontSize: "1.06rem",
+    padding: "10px 20px",
+    borderRadius: "15px",
+    background: "#A9DC97",
+    cursor: "grab",
+    userSelect: "none",
+    touchAction: "none",
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
+      {content}
+    </div>
+  );
+}
+
+// Drop zone for sentence
+function SentenceDropZone({ id, children }) {
+  const { setNodeRef, isOver } = useDroppable({
+    id: id,
+  });
+
+  const style = {
+    display: "flex",
+    fontFamily: "Indie Flower",
+    alignItems: "center",
+    justifyContent: "left",
+    gap: "10px",
+    fontSize: "1.3rem",
+    minWidth: "60%",
+    minHeight: "50px",
+    padding: "10px",
+    borderBottom: isOver ? "2px solid #626D58" : "2px dashed #ccc",
+    borderRadius: "10px",
+    background: isOver ? "rgba(169, 220, 151, 0.1)" : "transparent",
+    transition: "all 0.2s",
+  };
+
+  return (
+    <div ref={setNodeRef} style={style}>
+      {children}
+    </div>
+  );
+}
 
 export default function SubstitutionTable() {
   const column1 = ["Education", "It", "Nobody", "The purpose of education"];
@@ -14,7 +70,6 @@ export default function SubstitutionTable() {
     "the process by which our mind develops",
   ];
 
-  // Track 5 sentences, each sentence has 3 parts
   const [sentences, setSentences] = useState([
     { id: 1, parts: [] },
     { id: 2, parts: [] },
@@ -23,240 +78,234 @@ export default function SubstitutionTable() {
     { id: 5, parts: [] },
   ]);
 
-  const correctSentences = ["Education is the training for proper growth"]
-
-  const [draggedContent, setDraggedContent] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1);
-  const [currentGivenAnswer, setCurrentGivenAnswer] = useState(null);
+  const [activeId, setActiveId] = useState(null);
+  const [showArrowB, setShowArrowB] = useState(false);
 
-
-  const allGivenAnswers = []
-
-  const handleDragStart = (e, content) => {
-    setDraggedContent(content);
-  };
-
-  const handleDrop = (e, sentenceId) => {
-    e.preventDefault();
-    if (!draggedContent) return;
-
-    setSentences(
-      sentences.map((sentence) => {
-        if (sentence.id === sentenceId && sentence.parts.length < 3 && !sentence.parts.includes(draggedContent)) {
-          return { ...sentence, parts: [...sentence.parts, draggedContent] };
-        }
-        return sentence;
-      }),
-    );
-
-    setDraggedContent(null);
-  };
-
+  // Check if current sentence is complete
   useEffect(() => {
-    if (sentences[currentQuestionIndex - 1]?.parts.length === 3) {
-      setShowArrowB(true);
-    }
+    const currentSentence = sentences[currentQuestionIndex - 1];
+    setShowArrowB(currentSentence?.parts.length === 3);
   }, [sentences, currentQuestionIndex]);
 
-  const handleDragOver = (e) => {
-    e.preventDefault();
+  const handleDragStart = (event) => {
+    setActiveId(event.active.id);
+  };
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+    
+    if (over && over.id.toString().startsWith('sentence-')) {
+      const sentenceId = parseInt(over.id.replace('sentence-', ''));
+      const content = active.data.current.content;
+      
+      setSentences(sentences.map((sentence) => {
+        if (sentence.id === sentenceId && 
+            sentence.parts.length < 3 && 
+            !sentence.parts.includes(content)) {
+          return { ...sentence, parts: [...sentence.parts, content] };
+        }
+        return sentence;
+      }));
+    }
+    
+    setActiveId(null);
   };
 
   const removeWord = (sentenceId, index) => {
-    setSentences(
-      sentences.map((sentence) => {
-        if (sentence.id === sentenceId) {
-          return {
-            ...sentence,
-            parts: sentence.parts.filter((_, i) => i !== index),
-          };
-        }
-        return sentence;
-      }),
-    );
+    setSentences(sentences.map((sentence) => {
+      if (sentence.id === sentenceId) {
+        return {
+          ...sentence,
+          parts: sentence.parts.filter((_, i) => i !== index),
+        };
+      }
+      return sentence;
+    }));
   };
 
-
-
-  const handleNextQ = (e) => {
-    e.preventDefault();
-    setCurrentGivenAnswer((sentences[currentQuestionIndex - 1].parts).join(" "))
-    setCurrentQuestionIndex(currentQuestionIndex + 1);
-    setShowArrowB(false);
+  const handleNextQ = () => {
+    if (currentQuestionIndex < 5) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setShowArrowB(false);
+    } else {
+      alert("All sentences completed!");
+    }
   };
 
-  const [showArrowB, setShowArrowB] = useState(false);
+  // Get all words that are already used
+  const usedWords = sentences[currentQuestionIndex - 1]?.parts || [];
+
+  // Filter available words
+  const availableCol1 = column1.filter(word => !usedWords.includes(word));
+  const availableCol2 = column2.filter(word => !usedWords.includes(word));
+  const availableCol3 = column3.filter(word => !usedWords.includes(word));
 
   return (
-    <div style={{ marginBottom: "250px" }}>
-      <Titles title="Substitution Table" margin={true} />
-      <CancelCross />
+    <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+      <div style={{ marginBottom: "250px" }}>
+        <Titles title="Substitution Table" margin={true} />
+        <CancelCross />
 
-      <div style={{ textAlign: "center", marginTop: "50px" }}>
-        <p style={{ fontFamily: "Indie Flower", fontSize: "1.2rem" }}>
-          Make 5 sentences by dragging words from the columns below
-        </p>
-      </div>
+        <div style={{ textAlign: "center", marginTop: "50px" }}>
+          <p style={{ fontFamily: "Indie Flower", fontSize: "1.2rem" }}>
+            Make 5 sentences by dragging words from the columns below
+          </p>
+        </div>
 
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          gap: "20px",
-          marginTop: "50px",
-          alignItems: "flex-start",
-          justifyContent: "center",
-          fontFamily: "Indie Flower",
-          fontSize: "1.3rem",
-        }}
-      >
         <div
-          className="column1"
           style={{
             display: "flex",
-            gap: "10px",
-            flexDirection: "column",
-            padding: "0px 10px",
-            borderRight: "1px solid black",
+            flexDirection: "row",
+            gap: "20px",
+            marginTop: "50px",
+            alignItems: "flex-start",
+            justifyContent: "center",
+            fontFamily: "Indie Flower",
+            fontSize: "1.3rem",
           }}
         >
-          {column1.map((content, index) => (
-            <DraggableBox
-              key={index}
-              content={content}
-              onDragStart={handleDragStart}
-            />
-          ))}
-        </div>
-        <div
-          className="column2"
-          style={{
-            display: "flex",
-            gap: "10px",
-            flexDirection: "column",
-            padding: "0px 10px",
-            borderRight: "1px solid black",
-          }}
-        >
-          {column2.map((content, index) => (
-            <DraggableBox
-              key={index}
-              content={content}
-              onDragStart={handleDragStart}
-            />
-          ))}
-        </div>
-        <div
-          className="column3"
-          style={{
-            display: "flex",
-            gap: "10px",
-            flexDirection: "column",
-            padding: "0px 10px",
-          }}
-        >
-          {column3.map((content, index) => (
-            <DraggableBox
-              key={index}
-              content={content}
-              onDragStart={handleDragStart}
-            />
-          ))}
-        </div>
-      </div>
-
-      <div
-        className="answer-pad"
-        style={{
-          marginTop: "100px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "30px",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        {sentences.map((sentence) => {
-          if (sentence.id == currentQuestionIndex)
-            return (
-              <div
-                key={sentence.id}
-                onDrop={(e) => handleDrop(e, sentence.id)}
-                onDragOver={handleDragOver}
-                style={{
-                  display: "flex",
-                  // flexDirection: "column",
-                  fontFamily: "Indie Flower",
-                  // alignSelf: "center",
-                  // justifySelf: 'center',
-                  alignItems: "center",
-                  justifyContent: "left",
-                  marginTop: "20px",
-                  gap: "10px",
-                  fontSize: "1.3rem",
-                  minWidth: "60%",
-                  maxHeight: "30px",
-                  padding: "10px",
-                  borderBottom: "2px dashed #ccc",
-                  borderRadius: "10px",
-                }}
-              >
-                <p>{sentence.id}.</p>
-                {sentence.parts.map((part, index) => (
-                  <div
-                    key={index}
-                    onClick={() => removeWord(sentence.id, index)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <DraggableBox content={part} isDraggable={false} />
-                  </div>
-                ))}
-              </div>
-            );
-        })}
-        {/* {console.log(sentences[currentQuestionIndex].parts.length)} */}
-        {showArrowB && (
-          <button
-            onClick={handleNextQ}
+          <div
             style={{
-              width: "50px",
-              height: "35px",
-              border: "none",
-              borderRadius: "5px",
-              background: "#626D58",
-              color: "#FFF3CF",
-              cursor: "pointer",
-              fontSize: "20px",
+              display: "flex",
+              gap: "10px",
+              flexDirection: "column",
+              padding: "0px 10px",
+              borderRight: "1px solid black",
             }}
           >
-            →
-          </button>
-        )}
+            {availableCol1.map((content, index) => (
+              <DraggableWord
+                key={`col1-${index}`}
+                id={`col1-${content}`}
+                content={content}
+              />
+            ))}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+              flexDirection: "column",
+              padding: "0px 10px",
+              borderRight: "1px solid black",
+            }}
+          >
+            {availableCol2.map((content, index) => (
+              <DraggableWord
+                key={`col2-${index}`}
+                id={`col2-${content}`}
+                content={content}
+              />
+            ))}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+              flexDirection: "column",
+              padding: "0px 10px",
+            }}
+          >
+            {availableCol3.map((content, index) => (
+              <DraggableWord
+                key={`col3-${index}`}
+                id={`col3-${content}`}
+                content={content}
+              />
+            ))}
+          </div>
+        </div>
+
         <div
           style={{
+            marginTop: "100px",
             display: "flex",
-            gap: "10px",
-            // marginTop: "20px",
+            flexDirection: "column",
+            gap: "30px",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          {sentences.map((sentence) => (
-            <div
-              key={sentence.id}
+          {sentences.map((sentence) => {
+            if (sentence.id === currentQuestionIndex) {
+              return (
+                <SentenceDropZone key={sentence.id} id={`sentence-${sentence.id}`}>
+                  <p>{sentence.id}.</p>
+                  {sentence.parts.map((part, index) => (
+                    <div
+                      key={index}
+                      onClick={() => removeWord(sentence.id, index)}
+                      style={{
+                        cursor: "pointer",
+                        padding: "5px 10px",
+                        borderRadius: "15px",
+                        background: "#A9DC97",
+                        fontFamily: "Indie Flower",
+                      }}
+                    >
+                      {part}
+                    </div>
+                  ))}
+                </SentenceDropZone>
+              );
+            }
+            return null;
+          })}
+
+          {showArrowB && (
+            <button
+              onClick={handleNextQ}
               style={{
-                width: "10px",
-                height: "10px",
-                borderRadius: "50%",
-                ...(sentence.id === currentQuestionIndex
-                  ? { background: "#626D58" }
-                  : {
-                      border: "1px solid #626D58",
-                      background: "transparent",
-                    }),
+                width: "50px",
+                height: "35px",
+                border: "none",
+                borderRadius: "5px",
+                background: "#626D58",
+                color: "#FFF3CF",
+                cursor: "pointer",
+                fontSize: "20px",
               }}
-            ></div>
-          ))}
+            >
+              →
+            </button>
+          )}
+
+          <div style={{ display: "flex", gap: "10px" }}>
+            {sentences.map((sentence) => (
+              <div
+                key={sentence.id}
+                style={{
+                  width: "10px",
+                  height: "10px",
+                  borderRadius: "50%",
+                  ...(sentence.id === currentQuestionIndex
+                    ? { background: "#626D58" }
+                    : {
+                        border: "1px solid #626D58",
+                        background: "transparent",
+                      }),
+                }}
+              ></div>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+
+      <DragOverlay>
+        {activeId ? (
+          <div style={{
+            fontFamily: "Indie Flower",
+            fontSize: "1.06rem",
+            padding: "10px 20px",
+            borderRadius: "15px",
+            background: "#A9DC97",
+            opacity: 0.8,
+          }}>
+            {activeId.split('-').slice(1).join('-')}
+          </div>
+        ) : null}
+      </DragOverlay>
+    </DndContext>
   );
 }
