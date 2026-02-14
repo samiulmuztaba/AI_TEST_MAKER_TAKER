@@ -2,6 +2,7 @@ import Titles from "../../components/Titles";
 import CancelCross from "../../components/CancelCross";
 import { useState } from "react";
 import InputField from "../../components/InputField";
+import { api } from "../../api/client";
 
 export default function TagQuestion() {
   const questions = [
@@ -10,19 +11,40 @@ export default function TagQuestion() {
     "Stop Talking",
     "I am scared",
   ];
-  const answers = ["isn't it", "is it", "will you", "aren't I"];
+  // const answers = ["isn't it", "is it", "will you", "aren't I"];
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswer, setUserAnswer] = useState("");
   const [isAnswerCorrect, setIsAnswerCorrect] = useState("idle");
 
 
-  const handleSubmit = () => {
-    if (userAnswer.trim().toLowerCase() === answers[currentQuestionIndex]) {
-      setIsAnswerCorrect("correct");
-    } else {
-      setIsAnswerCorrect("wrong");
+  const handleSubmit = async () => {
+    try {
+        // Get user_id from localStorage (from login)
+        const user = JSON.parse(localStorage.getItem('user'));
+        
+        const result = await api.checkAnswer(
+            "tq_001",  // hardcoded for now
+            user.id,
+            userAnswer
+        );
+        
+        if (result.correct) {
+            setIsAnswerCorrect("correct");
+        } else {
+            setIsAnswerCorrect("wrong");
+        }
+        
+        console.log("New overall level:", result.new_overall_level);
+    } catch (error) {
+        console.error("Error checking answer:", error);
+        // Fallback to local check if API fails
+        // if (userAnswer.trim().toLowerCase() === answers[currentQuestionIndex]) {
+        //     setIsAnswerCorrect("correct");
+        // } else {
+        //     setIsAnswerCorrect("wrong");
+        // }
     }
-  };
+};
 
   const handleNextQuestion = () => {
     setUserAnswer("");

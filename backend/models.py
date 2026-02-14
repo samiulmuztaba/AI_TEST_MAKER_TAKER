@@ -15,4 +15,7 @@ class User(Base):
     email = Column(String, unique=True, index=True, nullable=False)
     password = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
-    skills = Column(JSON)
+    skills = Column(JSON, default=lambda: {
+        "overall_level": None,
+        "performance": {}
+    })

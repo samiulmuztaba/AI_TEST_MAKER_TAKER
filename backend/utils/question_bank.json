@@ -1,0 +1,181 @@
+{
+  "tag_questions": [
+    {
+      "id": "tq_001",
+      "type": "positive_to_negative",
+      "difficulty": "easy",
+      "question": "She is coming tomorrow",
+      "answer": "isn't she",
+      "explanation": {
+        "grammatical": "Positive statement with 'is' requires negative tag 'isn't' + pronoun",
+        "intuitive": "It just sounds complete when you add 'isn't she?' - try it!"
+      }
+    },
+    {
+      "id": "tq_002",
+      "type": "negative_to_positive",
+      "difficulty": "easy",
+      "question": "They don't like coffee",
+      "answer": "do they",
+      "explanation": {
+        "grammatical": "Negative 'don't' requires positive tag 'do'",
+        "intuitive": "The question feels natural with 'do they?' at the end"
+      }
+    },
+    {
+      "id": "tq_003",
+      "type": "positive_to_negative",
+      "difficulty": "medium",
+      "question": "Nobody came to the party",
+      "answer": "did they",
+      "explanation": {
+        "grammatical": "'Nobody' is negative in meaning, so use positive tag",
+        "intuitive": "Even though it sounds positive, 'nobody' means no one, so flip it"
+      }
+    },
+    {
+      "id": "tq_004",
+      "type": "imperative",
+      "difficulty": "medium",
+      "question": "Stop talking",
+      "answer": "will you",
+      "explanation": {
+        "grammatical": "Imperative sentences use 'will you' as tag",
+        "intuitive": "Commands sound polite with 'will you?' added"
+      }
+    },
+    {
+      "id": "tq_005",
+      "type": "special",
+      "difficulty": "hard",
+      "question": "I am scared",
+      "answer": "aren't I",
+      "explanation": {
+        "grammatical": "'I am' → 'aren't I' (NOT 'amn't I' which doesn't exist)",
+        "intuitive": "This is the weird one - just memorize 'aren't I'"
+      }
+    }
+  ],
+  "gap_filling": [
+    {
+      "id": "gf_001",
+      "difficulty": "easy",
+      "passage": "Honesty is a great virtue. It (a) ______ a person respected by all. A dishonest man may (b) ______ success for a short time, but in the long run he (c) ______. So, we should always be (d) ______ and (e) ______ the truth.",
+      "clues": ["makes", "gain", "falls", "honest", "speak"],
+      "answers": {
+        "a": "makes",
+        "b": "gain",
+        "c": "falls",
+        "d": "honest",
+        "e": "speak"
+      },
+      "explanation": "Context clues help you match the right word to each blank"
+    },
+    {
+      "id": "gf_002",
+      "difficulty": "medium",
+      "passage": "Education (a) ______ the mind and (b) ______ our thinking. Without education, nobody can (c) ______ in life. It (d) ______ us from ignorance and (e) ______ us better citizens.",
+      "clues": ["liberates", "prosper", "enlightens", "refines", "makes"],
+      "answers": {
+        "a": "enlightens",
+        "b": "refines",
+        "c": "prosper",
+        "d": "liberates",
+        "e": "makes"
+      },
+      "explanation": "Read the full passage first to understand the flow"
+    }
+  ],
+  "substitution_table": [
+    {
+      "id": "st_001",
+      "difficulty": "medium",
+      "columns": {
+        "column1": ["Education", "It", "Nobody", "The purpose of education"],
+        "column2": ["is", "can prosper", "enables"],
+        "column3": [
+          "the training for proper growth",
+          "the liberation of prejudice",
+          "our minds and refines our sensibility",
+          "in life without education",
+          "the process by which our mind develops"
+        ]
+      },
+      "correct_sentences": [
+        "Education is the process by which our mind develops",
+        "It enables our minds and refines our sensibility",
+        "Nobody can prosper in life without education",
+        "The purpose of education is the training for proper growth",
+        "Education is the liberation of prejudice"
+      ],
+      "explanation": "Match subjects with appropriate verbs and complete the meaning"
+    }
+  ],
+  "right_form_verbs": [
+    {
+      "id": "rfv_001",
+      "difficulty": "easy",
+      "passage": "I (go) to school every day. Yesterday I (see) my friend there. We (talk) for a while. Tomorrow we (meet) again.",
+      "answers": {
+        "go": "go",
+        "see": "saw",
+        "talk": "talked",
+        "meet": "will meet"
+      },
+      "explanation": "Pay attention to time indicators like 'every day', 'yesterday', 'tomorrow'"
+    },
+    {
+      "id": "rfv_002",
+      "difficulty": "medium",
+      "passage": "She (study) for three hours when I (call) her. She (be) tired but she (not/want) to stop.",
+      "answers": {
+        "study": "had been studying",
+        "call": "called",
+        "be": "was",
+        "not/want": "did not want"
+      },
+      "explanation": "Use perfect continuous for ongoing actions before a past event"
+    }
+  ],
+  "diagnostic": [
+    {
+      "id": "diag_001",
+      "topic": "tag_questions",
+      "type": "positive_to_negative",
+      "difficulty": "easy",
+      "question": "He plays football",
+      "answer": "doesn't he"
+    },
+    {
+      "id": "diag_002",
+      "topic": "tag_questions",
+      "type": "negative_to_positive",
+      "difficulty": "easy",
+      "question": "She isn't happy",
+      "answer": "is she"
+    },
+    {
+      "id": "diag_003",
+      "topic": "gap_filling",
+      "difficulty": "easy",
+      "passage": "I (a) ______ to school every day.",
+      "clues": ["go", "went", "going"],
+      "answer": "go"
+    },
+    {
+      "id": "diag_004",
+      "topic": "right_form_verbs",
+      "difficulty": "medium",
+      "question": "I (see) him yesterday",
+      "answer": "saw"
+    },
+    {
+      "id": "diag_005",
+      "topic": "tag_questions",
+      "type": "imperative",
+      "difficulty": "medium",
+      "question": "Close the door",
+      "answer": "will you"
+    }
+  ]
+}

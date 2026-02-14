@@ -1,6 +1,6 @@
 from datetime import datetime
 from pydantic import BaseModel # type: ignore
-from typing import Optional
+from typing import Optional, Dict, Any
 
 
 class RegistrationReq(BaseModel):
@@ -19,6 +19,7 @@ class UserResponse(BaseModel):
     username: str
     email: str
     created_at: datetime
+    skills: Optional[Dict[str, Any]] = None
 
     class Config:
         from_attributes = True
