@@ -8,6 +8,8 @@ from sqlalchemy.orm.attributes import flag_modified  # type: ignore
 from database import engine, get_db
 from passlib.context import CryptContext  # type: ignore
 from datetime import datetime
+import random
+from utils.questions import load_questions, get_question_by_id
 
 models.Base.metadata.create_all(bind=engine)  # Create tables :)
 
@@ -89,25 +91,32 @@ def get_user_by_id(user_id: str, db: Session = Depends(get_db)):
 
 # ======== Skill stuff =========
 @app.post("/api/answer")
-def check_answer(
-    data: schemas.AnswerRequest, db: Session = Depends(get_db)
-):
-    user = db.query(models.User).filter(models.User.id == data.user_id).first()
+@app.post("/api/answer")
+def check_answer(question_id: str, user_id: str, user_answer: str, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User doesn't exist")
 
+    # Load actual question from JSON
+    from utils.questions import get_question_by_id
+    question = get_question_by_id(question_id)
+    if not question:
+        raise HTTPException(status_code=404, detail="Question not found")
+    
+    # Get correct answer from question
+    correct_answer = question["answer"]
+    is_correct = user_answer.strip().lower() == correct_answer.lower()
+    
+    # Get topic and subtype from question
+    topic = question["topic"]           # e.g., "tag_questions"
+    subtype = question["type"]          # e.g., "positive_to_negative"
+    
     user_skills = user.skills
-    answer = "isn't she"
-    is_correct = data.user_answer.lower() == answer.lower()
-
-    q_type = "tag_questions.polarity_change"
-    topic = "tag_questions"  # Split it
-    subtype = "polarity_change"
-
+    
     # Initialize nested structure if needed
     if topic not in user_skills["performance"]:
         user_skills["performance"][topic] = {}
-
+    
     if subtype not in user_skills["performance"][topic]:
         user_skills["performance"][topic][subtype] = {
             "correct": 1 if is_correct else 0,
@@ -120,22 +129,80 @@ def check_answer(
         perf["total"] += 1
         if is_correct:
             perf["correct"] += 1
-            perf["score"] = (perf["correct"] / perf["total"]) * 100
-            perf["last_practiced"] = datetime.utcnow().isoformat()
+        perf["score"] = (perf["correct"] / perf["total"]) * 100
+        perf["last_practiced"] = datetime.utcnow().isoformat()
 
+    # Recalculate overall_level
     all_scores = [
-        subtype["score"]
-        for topic in user_skills["performance"].values()
-        for subtype in topic.values()
+        subtype_perf["score"]
+        for topic_data in user_skills["performance"].values()
+        for subtype_perf in topic_data.values()
     ]
-    user_skills["overall_level"] = sum(all_scores) / len(all_scores)
+    user_skills["overall_level"] = sum(all_scores) / len(all_scores) if all_scores else 0
 
-    user.skills = user_skills
     flag_modified(user, "skills")
     db.commit()
 
     return {
         "correct": is_correct,
-        "answer": answer,
-        "new_overall_level": user_skills["overall_level"],
+        "answer": correct_answer,
+        "explanation": question.get("explanation", {}),  # Return explanation too!
+        "new_overall_level": user_skills["overall_level"]
     }
+
+@app.post("/api/users/{user_id}/set-test-skills")
+def set_test_skills(user_id: str, db: Session = Depends(get_db)):
+    """Set random skill profile for testing"""
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Create random performance data
+    user.skills = {
+        "overall_level": random.randint(40, 80),
+        "performance": {
+            "tag_questions": {
+                "positive_to_negative": {
+                    "correct": random.randint(3, 8),
+                    "total": 10,
+                    "score": random.randint(30, 80),
+                    "last_practiced": datetime.utcnow().isoformat()
+                },
+                "negative_to_positive": {
+                    "correct": random.randint(2, 7),
+                    "total": 10,
+                    "score": random.randint(20, 70),
+                    "last_practiced": datetime.utcnow().isoformat()
+                }
+            }
+        }
+    }
+    
+    flag_modified(user, "skills")
+    db.commit()
+    return user.skills
+
+@app.get('/api/practice/tag-questions')
+def get_tag_questions(user_id: str, db: Session = Depends(get_db)):
+    """Get 5 tag questions based on weak types"""
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+    questions_db = load_questions()
+    tag_questions = questions_db['tag_questions']
+
+    weak_on = []
+    if "tag_questions" in user.skills.get('performance', {}):
+        for subtype, perf in user.skills['performance']['tag_questions']:
+            if perf['score'] < 60:
+                weak_on.append(subtype)
+
+    selected = []
+    
+    for q in tag_questions:
+        if q['type'] in weak_on and len(selected) <= 3:
+            selected.append(q)
+
+    # Append the remaining 2 randomly
+    remaining = [q for q in tag_questions if q not in selected]
+    selected.extend(random.sample(remaining, min(2, len(remaining))))
+    
+    return {"questions": selected[:5]}
