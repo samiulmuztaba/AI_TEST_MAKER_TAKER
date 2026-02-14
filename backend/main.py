@@ -90,15 +90,15 @@ def get_user_by_id(user_id: str, db: Session = Depends(get_db)):
 # ======== Skill stuff =========
 @app.post("/api/answer")
 def check_answer(
-    question_id: str, user_id: str, user_answer: str, db: Session = Depends(get_db)
+    data: schemas.AnswerRequest, db: Session = Depends(get_db)
 ):
-    user = db.query(models.User).filter(models.User.id == user_id).first()
+    user = db.query(models.User).filter(models.User.id == data.user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User doesn't exist")
 
     user_skills = user.skills
     answer = "isn't she"
-    is_correct = user_answer.lower() == answer.lower()
+    is_correct = data.user_answer.lower() == answer.lower()
 
     q_type = "tag_questions.polarity_change"
     topic = "tag_questions"  # Split it

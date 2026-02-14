@@ -21,13 +21,13 @@ export default function TagQuestion() {
     try {
         // Get user_id from localStorage (from login)
         const user = JSON.parse(localStorage.getItem('user'));
-        
+        console.log(user)
         const result = await api.checkAnswer(
             "tq_001",  // hardcoded for now
             user.id,
             userAnswer
         );
-        
+        console.log(user.id)
         if (result.correct) {
             setIsAnswerCorrect("correct");
         } else {

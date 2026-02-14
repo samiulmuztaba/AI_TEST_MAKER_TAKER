@@ -23,3 +23,8 @@ class UserResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class AnswerRequest(BaseModel):
+    question_id: str
+    user_id: str
+    user_answer: str
