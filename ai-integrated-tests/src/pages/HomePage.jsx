@@ -18,22 +18,6 @@ function HomePage() {
         padding: "150px 20px",
       }}
     >
-      <Link to="/login">
-        <button
-          style={{
-            background: "#626D58",
-            padding: "10px 20px",
-            fontFamily: "Irish Grover",
-            color: "white",
-            fontSize: '1.6rem',
-            borderRadius: "15px",
-            border: "none",
-            cursor: "pointer"
-          }}
-        >
-          Login
-        </button>
-      </Link>
       <div style={{ maxWidth: "800px", margin: "0 auto" }}>
         <Titles title="AI TEST MAKER-TAKER" />
         <div

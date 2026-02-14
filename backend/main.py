@@ -1,11 +1,11 @@
 from typing import List
 import models
-from fastapi import FastAPI, Depends, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI, Depends, HTTPException # type: ignore
+from fastapi.middleware.cors import CORSMiddleware # type: ignore
 import schemas
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session # type: ignore
 from database import engine, get_db
-from passlib.context import CryptContext
+from passlib.context import CryptContext # type: ignore
 
 models.Base.metadata.create_all(bind=engine)  # Create tables :)
 

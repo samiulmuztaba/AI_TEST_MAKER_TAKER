@@ -1,6 +1,6 @@
-from sqlalchemy import Column, Integer, String, DateTime, JSON, Text, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String, DateTime, JSON, Text, ForeignKey # type: ignore
+from sqlalchemy.ext.declarative import declarative_base # type: ignore
+from sqlalchemy.orm import relationship # type: ignore
 from datetime import datetime
 import uuid
 

@@ -5,6 +5,7 @@ import LoadingAnimation from "./pages/LoadingAnimation";
 import BenAnalysis from "./pages/BenAnalysis";
 import English2ndRouter from "./pages/English2ndRouter";
 import Login from "./pages/Login";
+import Registration from "./pages/Registration";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Registration/>} />
         <Route path="/generator/:type" element={<GeneratorPage />} />
         <Route
           path="generator/english-2nd/:topic"
