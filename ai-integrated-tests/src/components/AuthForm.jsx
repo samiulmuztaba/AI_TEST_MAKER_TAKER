@@ -16,8 +16,8 @@ const styles = {
     padding: "40px 60px",
     borderRadius: "15px",
     display: "flex",
-    flexDirection: "row",
-    gap: "4rem",
+    flexDirection: "column",
+    gap: "1.5rem",
     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
   },
   field: {
@@ -52,15 +52,15 @@ const styles = {
   },
   socialButton: {
     display: "flex",
+    flexDirection: "column",
     alignItems: "center",
-    gap: "12px",
-    padding: "12px 20px",
+    gap: "6px",
+    padding: "14px 18px",
     background: "white",
     borderRadius: "10px",
     cursor: "pointer",
     transition: "all 0.2s",
     boxShadow: "0 2px 4px rgba(0, 0, 0, 0.05)",
-    minWidth: "160px",
   },
 };
 
@@ -70,71 +70,91 @@ const socialProviders = [
   { icon: apple, name: "Apple" },
 ];
 
-export default function AuthForm({ type }) {
+export default function AuthForm({ type, onSubmit, loading }) {
   const isRegister = type === "register";
 
   return (
     <div style={styles.container}>
       <div style={styles.form}>
-        <form style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+        <form onSubmit={onSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
           <div style={styles.field}>
             <label htmlFor="username" style={styles.label}>Username</label>
-            <input type="text" id="username" placeholder="Enter your username" style={styles.input} />
+            <input 
+              type="text" 
+              id="username" 
+              name="username"
+              placeholder="Enter your username" 
+              style={styles.input}
+              required
+            />
           </div>
 
           {isRegister && (
             <div style={styles.field}>
               <label htmlFor="email" style={styles.label}>Email</label>
-              <input type="email" id="email" placeholder="example@email.com" style={styles.input} />
+              <input 
+                type="email" 
+                id="email" 
+                name="email"
+                placeholder="example@email.com" 
+                style={styles.input}
+                required
+              />
             </div>
           )}
 
           <div style={styles.field}>
             <label htmlFor="password" style={styles.label}>Password</label>
-            <input type="password" id="password" placeholder="Enter your password" style={styles.input} />
+            <input 
+              type="password" 
+              id="password" 
+              name="password"
+              placeholder="Enter your password" 
+              style={styles.input}
+              required
+            />
           </div>
 
           <button
             type="submit"
-            style={styles.button}
-            onMouseEnter={(e) => e.currentTarget.style.background = "#4f5846"}
-            onMouseLeave={(e) => e.currentTarget.style.background = "#626D58"}
+            disabled={loading}
+            style={{
+              ...styles.button,
+              opacity: loading ? 0.7 : 1,
+              cursor: loading ? "not-allowed" : "pointer"
+            }}
+            onMouseEnter={(e) => !loading && (e.currentTarget.style.background = "#4f5846")}
+            onMouseLeave={(e) => !loading && (e.currentTarget.style.background = "#626D58")}
           >
-            {isRegister ? "Register" : "Login"}
+            {loading ? "Loading..." : (isRegister ? "Register" : "Login")}
           </button>
         </form>
 
-        <div style={{ 
-          display: "flex", 
-          flexDirection: "column", 
-          justifyContent: "center",
-          borderLeft: "2px solid #88c576",
-          paddingLeft: "3rem"
-        }}>
-          <h3 style={{ 
-            fontSize: "1.1rem", 
-            color: "#2d3748", 
-            margin: "0 0 1.5rem 0",
-            fontWeight: "600"
-          }}>
-            Or continue with
-          </h3>
-          <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+        <div style={{ marginTop: "1rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.5rem" }}>
+            <div style={{ flex: 1, height: "1px", background: "#88c576" }} />
+            <h2 style={{ textAlign: "center", color: "#4a5568", fontSize: "0.95rem", fontWeight: "500", margin: 0 }}>
+              Or, sign {isRegister ? "up" : "in"} with
+            </h2>
+            <div style={{ flex: 1, height: "1px", background: "#88c576" }} />
+          </div>
+
+          <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
             {socialProviders.map(({ icon, name }) => (
               <div
                 key={name}
                 style={styles.socialButton}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateX(4px)";
+                  e.currentTarget.style.transform = "translateY(-2px)";
                   e.currentTarget.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.1)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateX(0)";
+                  e.currentTarget.style.transform = "translateY(0)";
                   e.currentTarget.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.05)";
                 }}
               >
-                <img src={icon} alt={name} style={{ width: "24px", height: "24px" }} />
-                <p style={{ fontSize: "15px", color: "#374151", margin: 0, fontWeight: "500" }}>{name}</p>
+                <img src={icon} alt={name} style={{ width: "28px", height: "28px" }} />
+                <p style={{ fontSize: "13px", color: "#374151", margin: 0, fontWeight: "500" }}>{name}</p>
               </div>
             ))}
           </div>
