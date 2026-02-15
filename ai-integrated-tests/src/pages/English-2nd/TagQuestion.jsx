@@ -10,6 +10,7 @@ export default function TagQuestion() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswer, setUserAnswer] = useState("");
   const [isAnswerCorrect, setIsAnswerCorrect] = useState("idle");
+  const [explanation, setExplanation] = useState('')
   
   const user = JSON.parse(localStorage.getItem('user'));
   
@@ -44,9 +45,12 @@ export default function TagQuestion() {
       } else {
         setIsAnswerCorrect("wrong");
       }
+      console.log("Explanation:", result.explanation["grammatical"]);
+      // setExplanation(result.explanation)
+      setExplanation(result.explanation["grammatical"])
+      console.log(explanation)
       
       console.log("New overall level:", result.new_overall_level);
-      console.log("Explanation:", result.explanation);
     } catch (error) {
       console.error("Error checking answer:", error);
     }
@@ -192,8 +196,15 @@ export default function TagQuestion() {
                   ✓
                 </div>
                 <h3 style={{ fontFamily: "Indie Flower" }}>That's correct!</h3>
-              </div>
-
+              </div><h3
+                style={{
+                  fontFamily: "Indie Flower",
+                  width: "50%",
+                  textAlign: "center",
+                }}
+              >
+                {explanation}
+              </h3>
               <button
                 onClick={handleNextQuestion}
                 style={{
@@ -237,7 +248,7 @@ export default function TagQuestion() {
                   textAlign: "center",
                 }}
               >
-                Noo duude, that was wrong! Try again
+                {explanation}
               </h3>
 
               <InputField
@@ -292,7 +303,7 @@ export default function TagQuestion() {
             ))}
           </div>
         </div>
-      </div>
+      </div> 
     </div>
   );
 }

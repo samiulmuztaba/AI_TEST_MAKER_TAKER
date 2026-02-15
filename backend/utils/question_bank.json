@@ -51,7 +51,7 @@
       "question": "I am scared",
       "answer": "aren't I",
       "explanation": {
-        "grammatical": "'I am' → 'aren't I' (NOT 'amn't I' which doesn't exist)",
+        "grammatical": "' I am ' to ' aren't I ' (NOT 'amn't I' which doesn't exist)",
         "intuitive": "This is the weird one - just memorize 'aren't I'"
       }
     }
