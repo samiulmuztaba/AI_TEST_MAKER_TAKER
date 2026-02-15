@@ -16,4 +16,15 @@ def get_question_by_id(q_id: str):
                     return q
     return None
 
-print(load_questions())
+def get_question_category_by_id(q_id: str):
+    for category in load_questions().values():
+        if isinstance(category, list):
+            for q in category:
+                if q.get('id') == q_id:
+                    for key in load_questions().keys():
+                        if load_questions()[key] == category:
+                            return key
+
+# print(load_questions())
+
+# print(get_question_category_by_id('gf_001'))

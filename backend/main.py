@@ -9,7 +9,7 @@ from database import engine, get_db
 from passlib.context import CryptContext  # type: ignore
 from datetime import datetime
 import random
-from utils.questions import load_questions, get_question_by_id
+from utils.questions import load_questions, get_question_by_id, get_question_category_by_id
 
 models.Base.metadata.create_all(bind=engine)  # Create tables :)
 
@@ -91,25 +91,24 @@ def get_user_by_id(user_id: str, db: Session = Depends(get_db)):
 
 # ======== Skill stuff =========
 @app.post("/api/answer")
-@app.post("/api/answer")
-def check_answer(question_id: str, user_id: str, user_answer: str, db: Session = Depends(get_db)):
-    user = db.query(models.User).filter(models.User.id == user_id).first()
+def check_answer(ans_req: schemas.AnswerRequest, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.id == ans_req.user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User doesn't exist")
 
     # Load actual question from JSON
     from utils.questions import get_question_by_id
-    question = get_question_by_id(question_id)
+    question = get_question_by_id(ans_req.question_id)
     if not question:
         raise HTTPException(status_code=404, detail="Question not found")
     
     # Get correct answer from question
     correct_answer = question["answer"]
-    is_correct = user_answer.strip().lower() == correct_answer.lower()
+    is_correct = ans_req.user_answer.strip().lower() == correct_answer.lower()
     
     # Get topic and subtype from question
-    topic = question["topic"]           # e.g., "tag_questions"
-    subtype = question["type"]          # e.g., "positive_to_negative"
+    topic = get_question_category_by_id(ans_req.question_id)      
+    type = question["type"]          
     
     user_skills = user.skills
     
@@ -117,15 +116,15 @@ def check_answer(question_id: str, user_id: str, user_answer: str, db: Session =
     if topic not in user_skills["performance"]:
         user_skills["performance"][topic] = {}
     
-    if subtype not in user_skills["performance"][topic]:
-        user_skills["performance"][topic][subtype] = {
+    if type not in user_skills["performance"][topic]:
+        user_skills["performance"][topic][type] = {
             "correct": 1 if is_correct else 0,
             "total": 1,
             "score": 100 if is_correct else 0,
             "last_practiced": datetime.utcnow().isoformat(),
         }
     else:
-        perf = user_skills["performance"][topic][subtype]
+        perf = user_skills["performance"][topic][type]
         perf["total"] += 1
         if is_correct:
             perf["correct"] += 1
@@ -191,7 +190,7 @@ def get_tag_questions(user_id: str, db: Session = Depends(get_db)):
 
     weak_on = []
     if "tag_questions" in user.skills.get('performance', {}):
-        for subtype, perf in user.skills['performance']['tag_questions']:
+        for subtype, perf in user.skills['performance']['tag_questions'].items():
             if perf['score'] < 60:
                 weak_on.append(subtype)
 

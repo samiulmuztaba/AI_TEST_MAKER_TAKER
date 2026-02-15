@@ -50,4 +50,9 @@ export const api = {
     if (!response.ok) throw new Error("Failed to check answer");
     return response.json();
   },
+  getPracticeQuestions: async (topic, userId) => {
+    const response = await fetch(`${API_BASE_URL}/api/practice/${topic}?user_id=${userId}`)
+    if (!response.ok) throw new Error('Failed to fetch questions')
+    return response.json()
+}
 };

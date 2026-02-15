@@ -1,50 +1,56 @@
 import Titles from "../../components/Titles";
 import CancelCross from "../../components/CancelCross";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import InputField from "../../components/InputField";
 import { api } from "../../api/client";
 
 export default function TagQuestion() {
-  const questions = [
-    "Something is happening",
-    "No, it's nothing",
-    "Stop Talking",
-    "I am scared",
-  ];
-  // const answers = ["isn't it", "is it", "will you", "aren't I"];
+  const [questions, setQuestions] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswer, setUserAnswer] = useState("");
   const [isAnswerCorrect, setIsAnswerCorrect] = useState("idle");
-
+  
+  const user = JSON.parse(localStorage.getItem('user'));
+  
+  // Fetch questions on component mount
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const result = await api.getPracticeQuestions('tag-questions', user.id);
+        setQuestions(result.questions);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching questions:", err);
+        setLoading(false);
+      }
+    };
+    fetchQuestions();
+  }, [user.id]);
 
   const handleSubmit = async () => {
     try {
-        // Get user_id from localStorage (from login)
-        const user = JSON.parse(localStorage.getItem('user'));
-        console.log(user)
-        const result = await api.checkAnswer(
-            "tq_001",  // hardcoded for now
-            user.id,
-            userAnswer
-        );
-        console.log(user.id)
-        if (result.correct) {
-            setIsAnswerCorrect("correct");
-        } else {
-            setIsAnswerCorrect("wrong");
-        }
-        
-        console.log("New overall level:", result.new_overall_level);
+      const currentQuestion = questions[currentQuestionIndex];
+      
+      const result = await api.checkAnswer(
+        currentQuestion.id,
+        user.id,
+        userAnswer
+      );
+      
+
+      if (result.correct) {
+        setIsAnswerCorrect("correct");
+      } else {
+        setIsAnswerCorrect("wrong");
+      }
+      
+      console.log("New overall level:", result.new_overall_level);
+      console.log("Explanation:", result.explanation);
     } catch (error) {
-        console.error("Error checking answer:", error);
-        // Fallback to local check if API fails
-        // if (userAnswer.trim().toLowerCase() === answers[currentQuestionIndex]) {
-        //     setIsAnswerCorrect("correct");
-        // } else {
-        //     setIsAnswerCorrect("wrong");
-        // }
+      console.error("Error checking answer:", error);
     }
-};
+  };
 
   const handleNextQuestion = () => {
     setUserAnswer("");
@@ -56,12 +62,44 @@ export default function TagQuestion() {
       setCurrentQuestionIndex(0);
     }
   };
-
+  
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleSubmit();
     }
   };
+
+  if (loading) {
+    return (
+      <div style={{ 
+        display: "flex", 
+        justifyContent: "center", 
+        alignItems: "center", 
+        height: "100vh",
+        fontFamily: "Irish Grover",
+        fontSize: "2rem"
+      }}>
+        Loading questions...
+      </div>
+    );
+  }
+
+  if (!questions.length) {
+    return (
+      <div style={{ 
+        display: "flex", 
+        justifyContent: "center", 
+        alignItems: "center", 
+        height: "100vh",
+        fontFamily: "Irish Grover",
+        fontSize: "2rem"
+      }}>
+        No questions available
+      </div>
+    );
+  }
+  
+  const currentQuestion = questions[currentQuestionIndex];
 
   return (
     <div>
@@ -95,7 +133,7 @@ export default function TagQuestion() {
               marginBottom: "20px",
             }}
           >
-            {questions[currentQuestionIndex]}, {isAnswerCorrect == "idle" ? "______": <span style={{textDecoration: "underline", color: ( isAnswerCorrect == "correct" ? "#C7C369" : "#F5745D")}}>{userAnswer}</span>} ?
+            {currentQuestion.question}, {isAnswerCorrect == "idle" ? "______": <span style={{textDecoration: "underline", color: ( isAnswerCorrect == "correct" ? "#C7C369" : "#F5745D")}}>{userAnswer}</span>} ?
           </h3>
 
           {isAnswerCorrect == "idle" ? (
@@ -199,8 +237,7 @@ export default function TagQuestion() {
                   textAlign: "center",
                 }}
               >
-                Noo duude, that’ was easy, ‘something’ isn’t plural, you gotta
-                fix your grammer first
+                Noo duude, that was wrong! Try again
               </h3>
 
               <InputField
@@ -259,4 +296,3 @@ export default function TagQuestion() {
     </div>
   );
 }
-
