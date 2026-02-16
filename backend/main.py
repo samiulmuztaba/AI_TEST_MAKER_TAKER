@@ -149,41 +149,10 @@ def check_answer(ans_req: schemas.AnswerRequest, db: Session = Depends(get_db)):
         "new_overall_level": user_skills["overall_level"]
     }
 
-@app.post("/api/users/{user_id}/set-test-skills")
-def set_test_skills(user_id: str, db: Session = Depends(get_db)):
-    """Set random skill profile for testing"""
-    user = db.query(models.User).filter(models.User.id == user_id).first()
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    
-    # Create random performance data
-    user.skills = {
-        "overall_level": random.randint(40, 80),
-        "performance": {
-            "tag_questions": {
-                "positive_to_negative": {
-                    "correct": random.randint(3, 8),
-                    "total": 10,
-                    "score": random.randint(30, 80),
-                    "last_practiced": datetime.utcnow().isoformat()
-                },
-                "negative_to_positive": {
-                    "correct": random.randint(2, 7),
-                    "total": 10,
-                    "score": random.randint(20, 70),
-                    "last_practiced": datetime.utcnow().isoformat()
-                }
-            }
-        }
-    }
-    
-    flag_modified(user, "skills")
-    db.commit()
-    return user.skills
 
 @app.get('/api/practice/tag-questions')
 def get_tag_questions(user_id: str, db: Session = Depends(get_db)):
-    """Get 5 tag questions based on weak types"""
+    """Get tag questions based on weak types"""
     user = db.query(models.User).filter(models.User.id == user_id).first()
     questions_db = load_questions()
     tag_questions = questions_db['tag_questions']
@@ -194,14 +163,15 @@ def get_tag_questions(user_id: str, db: Session = Depends(get_db)):
             if perf['score'] < 60:
                 weak_on.append(subtype)
 
-    selected = []
-    
-    for q in tag_questions:
-        if q['type'] in weak_on and len(selected) <= 3:
-            selected.append(q)
+        selected = []
+        
+        for q in tag_questions:
+            if q['type'] in weak_on and len(selected) <= 5:
+                selected.append(q)
+        if len(selected) == 0:
+            return {"No need!"}
 
-    # Append the remaining 2 randomly
-    remaining = [q for q in tag_questions if q not in selected]
-    selected.extend(random.sample(remaining, min(2, len(remaining))))
-    
+    else:
+        return {'questions': tag_questions}
+
     return {"questions": selected[:5]}

@@ -6,12 +6,15 @@ import BenAnalysis from "./pages/BenAnalysis";
 import English2ndRouter from "./pages/English2ndRouter";
 import Login from "./pages/Login";
 import Registration from "./pages/Registration";
+import LandingPage from "./pages/LandingPage";
 
 function App() {
+  const user = JSON.parse(localStorage.getItem('user'));
+  console.log(user)
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={user ? <HomePage /> : <LandingPage/>} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Registration/>} />
         <Route path="/generator/:type" element={<GeneratorPage />} />
