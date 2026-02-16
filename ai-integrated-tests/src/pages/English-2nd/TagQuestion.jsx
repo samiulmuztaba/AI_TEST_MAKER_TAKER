@@ -11,6 +11,8 @@ export default function TagQuestion() {
   const [userAnswer, setUserAnswer] = useState("");
   const [isAnswerCorrect, setIsAnswerCorrect] = useState("idle");
   const [explanation, setExplanation] = useState('')
+  const [isQuizComplete, setIsQuizComplete] = useState(false)
+  const [correctAnswers, setCorrectAnswers] = useState(0)
   
   const user = JSON.parse(localStorage.getItem('user'));
   
@@ -19,7 +21,8 @@ export default function TagQuestion() {
     const fetchQuestions = async () => {
       try {
         const result = await api.getPracticeQuestions('tag-questions', user.id);
-        setQuestions(result.questions);
+        if (result != "No need!") setQuestions(result.questions)
+          else return (<div>You don't need to practice this, you are good at this!</div>)
         setLoading(false);
       } catch (err) {
         console.error("Error fetching questions:", err);
@@ -42,6 +45,7 @@ export default function TagQuestion() {
 
       if (result.correct) {
         setIsAnswerCorrect("correct");
+        setCorrectAnswers(correctAnswers + 1);
       } else {
         setIsAnswerCorrect("wrong");
       }
@@ -62,8 +66,7 @@ export default function TagQuestion() {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
-      alert("All questions completed!");
-      setCurrentQuestionIndex(0);
+      setIsQuizComplete(true);
     }
   };
   
@@ -99,6 +102,93 @@ export default function TagQuestion() {
         fontSize: "2rem"
       }}>
         No questions available
+      </div>
+    );
+  }
+
+  if (isQuizComplete) {
+    return (
+      <div>
+        <CancelCross />
+        <Titles title="Quiz Complete!" margin={true} />
+        <div
+          style={{
+            marginTop: "80px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "auto",
+            marginBottom: "100px",
+          }}
+        >
+          <div
+            style={{
+              padding: "40px 60px",
+              borderRadius: "15px",
+              background: "#A9DC97",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "20px",
+            }}
+          >
+            <div
+              style={{
+                width: "80px",
+                height: "80px",
+                fontSize: "60px",
+                background: "#C7C369",
+                borderRadius: "50%",
+                color: "#A9DC97",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              ✓
+            </div>
+            <h2
+              style={{
+                fontFamily: "Indie Flower",
+                fontSize: "32px",
+                textAlign: "center",
+              }}
+            >
+              Great Job!
+            </h2>
+            <div
+              style={{
+                fontSize: "24px",
+                fontFamily: "Indie Flower",
+                textAlign: "center",
+              }}
+            >
+              <p>You answered <strong>{correctAnswers}</strong> out of <strong>{questions.length}</strong> questions correctly.</p>
+              <p>Score: <strong>{Math.round((correctAnswers / questions.length) * 100)}%</strong></p>
+            </div>
+            <button
+              onClick={() => {
+                setIsQuizComplete(false);
+                setCurrentQuestionIndex(0);
+                setCorrectAnswers(0);
+                setUserAnswer("");
+              }}
+              style={{
+                padding: "10px 30px",
+                border: "none",
+                borderRadius: "5px",
+                background: "#626D58",
+                color: "#FFF3CF",
+                cursor: "pointer",
+                fontSize: "16px",
+                fontFamily: "Irish Grover",
+              }}
+            >
+              Retake Quiz
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
