@@ -50,9 +50,17 @@ export const api = {
     if (!response.ok) throw new Error("Failed to check answer");
     return response.json();
   },
-  getPracticeQuestions: async (topic, userId) => {
-    const response = await fetch(`${API_BASE_URL}/api/practice/${topic}?user_id=${userId}`)
-    if (!response.ok) throw new Error('Failed to fetch questions')
-    return response.json()
-}
+ getPracticeQuestions: async (topic, userId) => {
+   const response = await fetch(`${API_BASE_URL}/api/practice/${topic}?user_id=${userId}`);
+   if (!response.ok) throw new Error("Failed to fetch practice questions");
+   return response.json();
+ },
+ completePracticeSession: async (userId, topic, sessionCorrect, sessionTotal) => {
+   const response = await fetch(
+     `${API_BASE_URL}/api/practice/complete?user_id=${userId}&topic=${topic}&session_correct=${sessionCorrect}&session_total=${sessionTotal}`,
+     { method: "POST" }
+   );
+   if (!response.ok) throw new Error("Failed to complete session");
+   return response.json();
+ },
 };
