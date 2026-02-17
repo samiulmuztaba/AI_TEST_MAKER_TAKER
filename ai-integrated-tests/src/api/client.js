@@ -51,7 +51,7 @@ export const api = {
     return response.json();
   },
  getPracticeQuestions: async (topic, userId) => {
-   const response = await fetch(`${API_BASE_URL}/api/practice/${topic}?user_id=${userId}`);
+   const response = await fetch(`${API_BASE_URL}/api/practice/questions?topic=${topic}&user_id=${userId}`);
    if (!response.ok) throw new Error("Failed to fetch practice questions");
    return response.json();
  },

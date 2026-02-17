@@ -9,16 +9,61 @@ function HomePage() {
     { id: 3, title: "English 1st", type: "english-1st" },
     { id: 4, title: "English 2nd", type: "english-2nd" },
   ];
+  const user = JSON.parse(localStorage.getItem("user"));
+  const first_word = user.username[0].toUpperCase();
 
   return (
     <div
       style={{
+        width: '101%',
         background: "#ffF3Cf",
         minHeight: "100vh",
-        padding: "150px 20px",
+        margin: "0",
+        padding: "0",
+        overflowX: 'hidden'
       }}
     >
-      <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+      <Link to={`/profile/${user.id}`}>
+      <div
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          width: "40px",
+          height: "40px",
+          display: "flex",
+          alignSelf: "right",
+          cursor: "pointer",
+          position: "absolute",
+          top: "30px",
+          right: "80px",
+          fontFamily: "Irish Grover",
+          gap: "20px",
+          color: 'black'
+        }}
+      >
+        <div
+          style={{
+            background: "#626D58",
+            border: "none",
+            borderRadius: "50%",
+            width: "40px",
+            height: "40px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "#FFF3CF",
+            fontSize: "1.1rem",
+            flexShrink: 0,
+          }}
+        >
+          {first_word}
+        </div>
+        <h2>{user.username}</h2>
+      </div>
+      </Link>
+      <div
+        style={{ maxWidth: "800px", margin: "0 auto", padding: "150px 20px" }}
+      >
         <Titles title="AI TEST MAKER-TAKER" />
         <div
           style={{

@@ -7,6 +7,7 @@ import English2ndRouter from "./pages/English2ndRouter";
 import Login from "./pages/Login";
 import Registration from "./pages/Registration";
 import LandingPage from "./pages/LandingPage";
+import Profile from "./pages/Profile";
 
 function App() {
   const user = JSON.parse(localStorage.getItem('user'));
@@ -17,6 +18,7 @@ function App() {
         <Route path="/" element={user ? <HomePage /> : <LandingPage/>} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Registration/>} />
+        <Route path='/profile/:user_id' element={<Profile/>} />
         <Route path="/generator/:type" element={<GeneratorPage />} />
         <Route
           path="generator/english-2nd/:topic"
