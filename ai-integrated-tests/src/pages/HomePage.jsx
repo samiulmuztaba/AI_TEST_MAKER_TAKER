@@ -23,7 +23,7 @@ function HomePage() {
         overflowX: 'hidden'
       }}
     >
-      <Link to={`/profile/${user.id}`}>
+      <Link to={`/user/${user.id}`}>
       <div
         style={{
           alignItems: "center",

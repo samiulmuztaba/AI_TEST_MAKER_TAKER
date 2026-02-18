@@ -18,7 +18,7 @@ function App() {
         <Route path="/" element={user ? <HomePage /> : <LandingPage/>} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Registration/>} />
-        <Route path='/profile/:user_id' element={<Profile/>} />
+        <Route path='/user/:user_id' element={<Profile/>} />
         <Route path="/generator/:type" element={<GeneratorPage />} />
         <Route
           path="generator/english-2nd/:topic"
