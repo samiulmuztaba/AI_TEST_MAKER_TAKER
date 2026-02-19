@@ -132,6 +132,7 @@ export default function Profile() {
       }}
     >
       <CancelCross />
+      {/* ======================== User Infos ======================== */}
       <div
         style={{
           position: "absolute",
@@ -169,6 +170,7 @@ export default function Profile() {
           <p style={{ opacity: "0.7", margin: "0" }}>{joinedDate}</p>
         </div>
       </div>
+      {/* ====================== Overall Performance Summary ==================== */}
       <h2
         style={{
           background: "#A9DC97",
@@ -224,7 +226,7 @@ export default function Profile() {
                   flex: 1,
                   height: "15px",
                   borderRadius: "10px",
-                  background: "#FFFFFF",
+                  background: "#FFF3CF",
                   overflow: "hidden",
                 }}
               >
@@ -265,6 +267,19 @@ export default function Profile() {
           ))}
         </div>
       </div>
+      {/* ====================== Detailed Per Skill Performance ========================= */}
+      <h2
+        style={{
+          background: "#A9DC97",
+          padding: "10px 20px",
+          display: "inline-flex",
+          marginTop: "150px",
+          marginLeft: "80px",
+        }}
+      >
+        Detailed Analysis Per Questions
+      </h2>
+      
     </div>
   );
 }
