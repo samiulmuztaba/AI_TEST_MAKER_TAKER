@@ -219,26 +219,36 @@ def get_practice_questions(topic: str, user_id: str, db: Session = Depends(get_d
             "count":     count
         }
 
-    # ── CASE 2: All strong — check spaced repetition ──────────────────────
-    overdue_subtypes = []
-    for subtype, perf in sorted_subtypes:
-        interval_days  = perf.get('interval_days', 7)
-        last_practiced = perf.get('last_practiced')
-        if last_practiced:
-            last_dt  = datetime.fromisoformat(last_practiced)
-            due_date = last_dt + timedelta(days=interval_days)
-            if now >= due_date:
-                overdue_subtypes.append((subtype, due_date))
-
-    if overdue_subtypes:
-        overdue_subtypes.sort(key=lambda x: x[1])   # most overdue first
-        target = [s for s, _ in overdue_subtypes]
+    # ── CASE 2: Average exists — return the ones between 60-75 ──────────────────────
+    avg_subtypes = [s for s, p in sorted_subtypes if p['score'] >= 60 and p['score'] <= 75]
+    if avg_subtypes:
         return {
-            "questions": select_questions_from_subtypes(topic_questions, target, 5),
-            "mode":      "spaced_repetition"
-        }
+            "questions" : select_questions_from_subtypes(topic_questions, avg_subtypes, len(avg_subtypes)),
+            "mode": "avg",
 
-    # ── CASE 3: All strong AND all recently practiced ─────────────────────
+        }
+    print(avg_subtypes)
+    # ── CASE 3: All strong — check spaced repetition ──────────────────────
+    if not avg_subtypes:
+        overdue_subtypes = []
+        for subtype, perf in sorted_subtypes:
+            interval_days  = perf.get('interval_days', 7)
+            last_practiced = perf.get('last_practiced')
+            if last_practiced:
+                last_dt  = datetime.fromisoformat(last_practiced)
+                due_date = last_dt + timedelta(days=interval_days)
+                if now >= due_date:
+                    overdue_subtypes.append((subtype, due_date))
+
+        if overdue_subtypes:
+            overdue_subtypes.sort(key=lambda x: x[1])   # most overdue first
+            target = [s for s, _ in overdue_subtypes]
+            return {
+                "questions": select_questions_from_subtypes(topic_questions, target, 5),
+                "mode":      "spaced_repetition"
+            }
+
+    # ── CASE 4: All strong AND all recently practiced ─────────────────────
     return {"message": "No need!"}
 
 

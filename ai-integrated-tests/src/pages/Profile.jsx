@@ -72,24 +72,24 @@ export default function Profile() {
       const tagQPerf = data.skills?.performance?.tag_questions;
       if (tagQPerf) {
         const scores = Object.values(tagQPerf).map((p) => p.score);
-        const avgScore = scores.reduce((a, b) => a + b, 0) / scores.length;
+        const avgScore = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
         setTagQProgress(avgScore);
       }
       const subTabPerf = data.skills?.performance?.substitution_table;
       if (subTabPerf) {
         const scores = Object.values(subTabPerf).map((p) => p.score);
-        const avgScore = scores.reduce((a, b) => a + b, 0) / scores.length;
+        const avgScore = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
         setSubTablegQProgress(avgScore);
       }
       const gapFillingPerf = data.skills?.performance?.gap_filling;
       if (gapFillingPerf) {
-        const scores = Object.values(gapFillingPerf).map((p) => p.score);
+        const scores = Math.round(Object.values(gapFillingPerf).map((p) => p.score));
         const avgScore = scores.reduce((a, b) => a + b, 0) / scores.length;
         setGapFillingQProgress(avgScore);
       }
       const rvfPerf = data.skills?.performance?.right_form_verbs;
       if (rvfPerf) {
-        const scores = Object.values(rvfPerf).map((p) => p.score);
+        const scores = Math.round(Object.values(rvfPerf).map((p) => p.score));
         const avgScore = scores.reduce((a, b) => a + b, 0) / scores.length;
         setRfvProgress(avgScore);
       }
