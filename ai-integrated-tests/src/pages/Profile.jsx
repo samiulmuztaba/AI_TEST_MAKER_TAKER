@@ -58,14 +58,40 @@ function ScoreCircle({ score }) {
 export default function Profile() {
   const { user_id } = useParams();
   const [user, setUser] = useState(null);
+  const [tagQProgress, setTagQProgress] = useState(0)
+  const [gapFillingQProgress, setGapFillingQProgress] = useState(0)
+  const [SubTableQProgress, setSubTablegQProgress] = useState(0)
+  const [rfvQProgress, setRfvProgress] = useState(0)
 
   useEffect(() => {
     const getUser = async () => {
-      try {
-        const data = await api.getUserById(user_id);
-        setUser(data);
-      } catch (err) {
-        console.log(err.message);
+      const data = await api.getUserById(user_id);
+      setUser(data);
+
+      // Calculate tag questions progress from skills
+      const tagQPerf = data.skills?.performance?.tag_questions;
+      if (tagQPerf) {
+        const scores = Object.values(tagQPerf).map((p) => p.score);
+        const avgScore = scores.reduce((a, b) => a + b, 0) / scores.length;
+        setTagQProgress(avgScore);
+      }
+      const subTabPerf = data.skills?.performance?.substitution_table;
+      if (subTabPerf) {
+        const scores = Object.values(subTabPerf).map((p) => p.score);
+        const avgScore = scores.reduce((a, b) => a + b, 0) / scores.length;
+        setSubTablegQProgress(avgScore);
+      }
+      const gapFillingPerf = data.skills?.performance?.gap_filling;
+      if (gapFillingPerf) {
+        const scores = Object.values(gapFillingPerf).map((p) => p.score);
+        const avgScore = scores.reduce((a, b) => a + b, 0) / scores.length;
+        setGapFillingQProgress(avgScore);
+      }
+      const rvfPerf = data.skills?.performance?.right_form_verbs;
+      if (rvfPerf) {
+        const scores = Object.values(rvfPerf).map((p) => p.score);
+        const avgScore = scores.reduce((a, b) => a + b, 0) / scores.length;
+        setRfvProgress(avgScore);
       }
     };
     getUser();
@@ -95,7 +121,7 @@ export default function Profile() {
     month: "long",
     day: "numeric",
   });
-  console.log(skills.overall_level);
+
   return (
     <div
       style={{
@@ -158,8 +184,8 @@ export default function Profile() {
         style={{
           display: "flex",
           justifyContent: "space-between",
-          paddingLeft: '200px',
-          paddingRight: '200px',
+          paddingLeft: "200px",
+          paddingRight: "200px",
         }}
       >
         <ScoreCircle score={skills.overall_level} />
@@ -170,17 +196,18 @@ export default function Profile() {
             flexDirection: "column",
             width: "100%",
             maxWidth: "500px",
-            justifyContent: 'center',
-            borderRadius: '20px',
-            boxShadow: '1px 1px 5px rgba(0, 0, 0, 0.1)',
-            padding: '20px 40px'
+            justifyContent: "center",
+            borderRadius: "20px",
+            boxShadow: "1px 1px 5px rgba(0, 0, 0, 0.1)",
+            padding: "20px 40px",
+            background: "#A9DC97",
           }}
         >
           {[
-            { label: "Tag Questions", progress: 56 },
-            { label: "Gap Filling", progress: 0 },
-            { label: "Substitution Table", progress: 0 },
-            { label: "Right Forms of Verbs", progress: 0 },
+            { label: "Tag Questions", progress: tagQProgress },
+            { label: "Gap Filling", progress: gapFillingQProgress },
+            { label: "Substitution Table", progress: SubTableQProgress },
+            { label: "Right Forms of Verbs", progress: rfvQProgress },
           ].map(({ label, progress }) => (
             <div
               key={label}
@@ -206,13 +233,20 @@ export default function Profile() {
                     position: "absolute",
                     top: 0,
                     left: 0,
-                    width: `${progress}%`,
+                    width: `${progress * 0.8}%`,
                     height: "100%",
                     borderRadius: "10px",
-                    background: "#A9DC97",
+                    background: "#626D58",
                     transition: "width 0.3s ease",
+                    color: "#FFF3CF",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "flex-end",
+                    paddingRight: "10px",
                   }}
-                ><p>{progress}%</p></div>
+                >
+                  <p>{progress}%</p>
+                </div>
               </div>
 
               {/* Label */}
