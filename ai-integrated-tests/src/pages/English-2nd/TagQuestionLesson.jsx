@@ -140,19 +140,46 @@ function FirstRule({ hns }) {
 
   const next = () => setStep((prev) => prev + 1);
 
-  return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px" }}>
+  const btnStyle = {
+    padding: "10px 20px",
+    border: "none",
+    borderRadius: "5px",
+    background: "#626D58",
+    color: "#FFF3CF",
+    cursor: "pointer",
+    fontSize: "16px",
+    fontFamily: "Irish Grover",
+  };
 
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "20px",
+      }}
+    >
       {/* Step 0: Just show the full sentence */}
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-        <span style={{ fontFamily: "Irish Grover", fontSize: "22px", color: "#5C3D11" }}>
+        <span
+          style={{
+            fontFamily: "Irish Grover",
+            fontSize: "22px",
+            color: "#5C3D11",
+          }}
+        >
           He is honest,
         </span>
-        <span style={{
-          fontFamily: "Irish Grover", fontSize: "22px", color: "#5C3D11",
-          opacity: step >= 1 ? 1 : 0,
-          transition: "opacity 0.5s ease",
-        }}>
+        <span
+          style={{
+            fontFamily: "Irish Grover",
+            fontSize: "22px",
+            color: "#5C3D11",
+            opacity: step >= 1 ? 1 : 0,
+            transition: "opacity 0.5s ease",
+          }}
+        >
           isn't he?
         </span>
       </div>
@@ -165,115 +192,297 @@ function FirstRule({ hns }) {
 
       {/* Step 1: Point at the tag */}
       {step >= 1 && (
-        <div style={{ animation: "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards" }}>
-          <p style={{ fontFamily: "Indie Flower", fontSize: "17px", color: "#5C3D11", textAlign: "center", margin: 0 }}>
-            👆 See that <strong>"isn't he?"</strong> at the end? That's the <strong>tag</strong>.
+        <div
+          style={{
+            animation: "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+          }}
+        >
+          <p
+            style={{
+              fontFamily: "Indie Flower",
+              fontSize: "17px",
+              color: "#5C3D11",
+              textAlign: "center",
+              margin: 0,
+            }}
+          >
+            👆 See that <strong>"isn't he?"</strong> at the end? That's the{" "}
+            <strong>tag</strong>.
           </p>
         </div>
       )}
 
       {step === 1 && (
-        <button onClick={next} style={btnStyle}>Hmm....</button>
+        <button onClick={next} style={btnStyle}>
+          Hmm....
+        </button>
       )}
 
       {/* Step 2: Highlight where it came from */}
       {step >= 2 && (
-        <div style={{
-          display: "flex", flexDirection: "column", alignItems: "center", gap: "12px",
-          animation: "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards"
-        }}>
-          <p style={{ fontFamily: "Indie Flower", fontSize: "17px", color: "#5C3D11", margin: 0, textAlign: "center" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "12px",
+            animation: "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+          }}
+        >
+          <p
+            style={{
+              fontFamily: "Indie Flower",
+              fontSize: "17px",
+              color: "#5C3D11",
+              margin: 0,
+              textAlign: "center",
+            }}
+          >
             Now look closely — where did <strong>"isn't he"</strong> come from?
           </p>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <span style={{ fontFamily: "Irish Grover", fontSize: "18px", color: "#5C3D11" }}>He</span>
+            <span
+              style={{
+                fontFamily: "Irish Grover",
+                fontSize: "18px",
+                color: "#5C3D11",
+              }}
+            >
+              He
+            </span>
             {/* highlighted */}
-            <span style={{
-              padding: "4px 12px", borderRadius: "8px", fontFamily: "Irish Grover",
-              fontSize: "18px", color: "#FFF3CF", background: "#928644d2", border: "2px solid #A9DC97"
-            }}>He</span>
-            <span style={{
-              padding: "4px 12px", borderRadius: "8px", fontFamily: "Irish Grover",
-              fontSize: "18px", color: "#FFF3CF", background: "#928644", border: "2px solid #F5D77E"
-            }}>is</span>
-            <span style={{ fontFamily: "Irish Grover", fontSize: "18px", color: "#5C3D11" }}>honest</span>
+            <span
+              style={{
+                padding: "4px 12px",
+                borderRadius: "8px",
+                fontFamily: "Irish Grover",
+                fontSize: "18px",
+                color: "#FFF3CF",
+                background: "#928644d2",
+                border: "2px solid #A9DC97",
+              }}
+            >
+              He
+            </span>
+            <span
+              style={{
+                padding: "4px 12px",
+                borderRadius: "8px",
+                fontFamily: "Irish Grover",
+                fontSize: "18px",
+                color: "#FFF3CF",
+                background: "#928644",
+                border: "2px solid #F5D77E",
+              }}
+            >
+              is
+            </span>
+            <span
+              style={{
+                fontFamily: "Irish Grover",
+                fontSize: "18px",
+                color: "#5C3D11",
+              }}
+            >
+              honest
+            </span>
           </div>
           <div style={{ fontSize: "22px", color: "#626D58" }}>↓</div>
           <div style={{ display: "flex", gap: "8px" }}>
-            <span style={{
-              padding: "4px 12px", borderRadius: "8px", fontFamily: "Irish Grover",
-              fontSize: "18px", color: "#FFF3CF", background: "#928644", border: "2px solid #F5D77E"
-            }}>is</span>
-            <span style={{
-              padding: "4px 12px", borderRadius: "8px", fontFamily: "Irish Grover",
-              fontSize: "18px", color: "#FFF3CF", background: "#928644d2", border: "2px solid #A9DC97"
-            }}>he</span>
+            <span
+              style={{
+                padding: "4px 12px",
+                borderRadius: "8px",
+                fontFamily: "Irish Grover",
+                fontSize: "18px",
+                color: "#FFF3CF",
+                background: "#928644",
+                border: "2px solid #F5D77E",
+              }}
+            >
+              is
+            </span>
+            <span
+              style={{
+                padding: "4px 12px",
+                borderRadius: "8px",
+                fontFamily: "Irish Grover",
+                fontSize: "18px",
+                color: "#FFF3CF",
+                background: "#928644d2",
+                border: "2px solid #A9DC97",
+              }}
+            >
+              he
+            </span>
           </div>
-          <p style={{ fontFamily: "Indie Flower", fontSize: "15px", color: "#8b7c4e", margin: 0, fontStyle: "italic" }}>
-            We took the verb and subject from the sentence — verb goes first in the tag!
+          <p
+            style={{
+              fontFamily: "Indie Flower",
+              fontSize: "15px",
+              color: "#8b7c4e",
+              margin: 0,
+              fontStyle: "italic",
+            }}
+          >
+            We took the verb and subject from the sentence — verb goes first in
+            the tag!
           </p>
         </div>
       )}
 
       {step === 2 && (
-        <button onClick={next} style={btnStyle}>Oh interesting!</button>
+        <button onClick={next} style={btnStyle}>
+          Oh interesting!
+        </button>
       )}
 
       {/* Step 3: Polarity flip discovery */}
       {step >= 3 && (
-        <div style={{
-          display: "flex", flexDirection: "column", alignItems: "center", gap: "12px",
-          animation: "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards"
-        }}>
-          <p style={{ fontFamily: "Indie Flower", fontSize: "17px", color: "#5C3D11", margin: 0, textAlign: "center" }}>
-            But wait — <strong>"is"</strong> became <strong>"isn't"</strong>. Why?
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "12px",
+            animation: "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+          }}
+        >
+          <p
+            style={{
+              fontFamily: "Indie Flower",
+              fontSize: "17px",
+              color: "#5C3D11",
+              margin: 0,
+              textAlign: "center",
+            }}
+          >
+            But wait — <strong>"is"</strong> became <strong>"isn't"</strong>.
+            Why?
           </p>
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
-              <span style={{
-                padding: "6px 14px", borderRadius: "8px", fontFamily: "Irish Grover",
-                fontSize: "17px", color: "#FFF3CF", background: "#5a8c4e", border: "2px solid #A9DC97"
-              }}>+ positive</span>
-              <p style={{ fontFamily: "Irish Grover", color: "#8b7c4e", margin: 0, fontSize: "14px" }}>statement</p>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "4px",
+              }}
+            >
+              <span
+                style={{
+                  padding: "6px 14px",
+                  borderRadius: "8px",
+                  fontFamily: "Irish Grover",
+                  fontSize: "17px",
+                  color: "#FFF3CF",
+                  background: "#5a8c4e",
+                  border: "2px solid #A9DC97",
+                }}
+              >
+                + positive
+              </span>
+              <p
+                style={{
+                  fontFamily: "Irish Grover",
+                  color: "#8b7c4e",
+                  margin: 0,
+                  fontSize: "14px",
+                }}
+              >
+                statement
+              </p>
             </div>
-            <span style={{ fontSize: "28px", color: "#626D58", fontWeight: "bold" }}>→</span>
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
-              <span style={{
-                padding: "6px 14px", borderRadius: "8px", fontFamily: "Irish Grover",
-                fontSize: "17px", color: "#FFF3CF", background: "#b85c5c", border: "2px solid #e07070"
-              }}>− negative</span>
-              <p style={{ fontFamily: "Irish Grover", color: "#8b7c4e", margin: 0, fontSize: "14px" }}>tag</p>
+            <span
+              style={{ fontSize: "28px", color: "#626D58", fontWeight: "bold" }}
+            >
+              →
+            </span>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "4px",
+              }}
+            >
+              <span
+                style={{
+                  padding: "6px 14px",
+                  borderRadius: "8px",
+                  fontFamily: "Irish Grover",
+                  fontSize: "17px",
+                  color: "#FFF3CF",
+                  background: "#b85c5c",
+                  border: "2px solid #e07070",
+                }}
+              >
+                − negative
+              </span>
+              <p
+                style={{
+                  fontFamily: "Irish Grover",
+                  color: "#8b7c4e",
+                  margin: 0,
+                  fontSize: "14px",
+                }}
+              >
+                tag
+              </p>
             </div>
           </div>
-          <p style={{ fontFamily: "Indie Flower", fontSize: "15px", color: "#8b7c4e", margin: 0, fontStyle: "italic", textAlign: "center" }}>
-            The sentence was positive, so the tag flips to negative. Always opposite!
+          <p
+            style={{
+              fontFamily: "Indie Flower",
+              fontSize: "15px",
+              color: "#8b7c4e",
+              margin: 0,
+              fontStyle: "italic",
+              textAlign: "center",
+            }}
+          >
+            The sentence was positive, so the tag flips to negative. Always
+            opposite!
           </p>
         </div>
       )}
 
       {step === 3 && (
-        <button onClick={next} style={btnStyle}>Makes sense!</button>
+        <button onClick={next} style={btnStyle}>
+          Makes sense!
+        </button>
       )}
 
       {/* Step 4: Done */}
       {step >= 4 && (
-        <div style={{ animation: "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards", textAlign: "center" }}>
-          <p style={{ fontFamily: "Indie Flower", fontSize: "17px", color: "#5C3D11", margin: 0 }}>
+        <div
+          style={{
+            animation: "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+            textAlign: "center",
+          }}
+        >
+          <p
+            style={{
+              fontFamily: "Indie Flower",
+              fontSize: "17px",
+              color: "#5C3D11",
+              margin: 0,
+            }}
+          >
             🎉 That's the core mechanic! Verb + subject, flipped polarity.
           </p>
-          <button onClick={hns} style={{ ...btnStyle, marginTop: "12px" }}>Got it!</button>
+          <button
+            onClick={hns}
+            style={{ ...btnStyle, marginTop: "12px" }}
+          >
+            Got it?
+          </button>
         </div>
       )}
-
     </div>
   );
 }
 
-const btnStyle = {
-  padding: "10px 20px", border: "none", borderRadius: "5px",
-  background: "#626D58", color: "#FFF3CF", cursor: "pointer",
-  fontSize: "16px", fontFamily: "Irish Grover",
-};
 
 function SecondRule({ hns }) {
   return (
