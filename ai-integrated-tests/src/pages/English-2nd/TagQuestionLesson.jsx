@@ -137,6 +137,7 @@ function IntroComponent({ hns }) {
 // ------------------------ Rules Components ------------------------
 function FirstRule({ hns }) {
   const [step, setStep] = useState(0);
+  const [hover, setHover] = useState(false);
 
   const next = () => setStep((prev) => prev + 1);
 
@@ -144,7 +145,7 @@ function FirstRule({ hns }) {
     padding: "10px 20px",
     border: "none",
     borderRadius: "5px",
-    background: "#626D58",
+    background: hover ? "#8b7c4e" : "#626D58",
     color: "#FFF3CF",
     cursor: "pointer",
     fontSize: "16px",
@@ -472,17 +473,18 @@ function FirstRule({ hns }) {
             🎉 That's the core mechanic! Verb + subject, flipped polarity.
           </p>
           <button
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
             onClick={hns}
             style={{ ...btnStyle, marginTop: "12px" }}
           >
-            Got it?
+            {hover ? "Yes!" : "Got it?"}
           </button>
         </div>
       )}
     </div>
   );
 }
-
 
 function SecondRule({ hns }) {
   return (
