@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Registration from "./pages/Registration";
 import LandingPage from "./pages/LandingPage";
 import Profile from "./pages/Profile";
+import TagQuestionLesson from "./pages/English-2nd/TagQuestionLesson";
 
 function App() {
   const user = JSON.parse(localStorage.getItem('user'));
@@ -24,6 +25,7 @@ function App() {
           path="generator/english-2nd/:topic"
           element={<English2ndRouter />}
         />
+        <Route path="/learn/english-2nd/tag-questions" element={<TagQuestionLesson/>} />
         <Route path="/generating/:percentage" element={<LoadingAnimation />} />
         <Route path="/benanalysis" element={<BenAnalysis />} />
       </Routes>
