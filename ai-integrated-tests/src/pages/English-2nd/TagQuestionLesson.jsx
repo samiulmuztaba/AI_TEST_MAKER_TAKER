@@ -3,6 +3,7 @@ import CancelCross from "../../components/CancelCross";
 import Titles from "../../components/Titles";
 import UserBadge from "../../components/UserBadge";
 
+// ------------------------ Section Components ------------------------
 function IntroComponent({ hns }) {
   return (
     <div
@@ -88,7 +89,7 @@ function IntroComponent({ hns }) {
       >
         <p
           style={{
-            fontFamily: "Indie Flower",
+              fontFamily: "Indie Flower",
             fontSize: "17px",
             color: "#5C3D11",
             margin: 0,
@@ -126,17 +127,127 @@ function IntroComponent({ hns }) {
           fontSize: "16px",
           fontFamily: "Irish Grover",
         }}
-      >
+        >
         Let's learn this!
       </button>
     </div>
   );
 }
 
-function RulesComponent({ hns }) {
+// ------------------------ Rules Components ------------------------
+function FirstRule({ hns }) {
   return (
     <div>
-      <div></div>
+      <h2>First Rule</h2>
+      <button onClick={hns}>got it?</button>
+    </div>
+  );
+}
+
+function SecondRule({ hns }) {
+  return (
+    <div>
+      <h2>Second Rule</h2>
+      <button onClick={hns}>got it?</button>
+    </div>
+  );
+}
+
+function ThirdRule({ hns }) {
+  return (
+    <div>
+      <h2>Third Rule</h2>
+      <button onClick={hns}>got it?</button>
+    </div>
+  );
+}
+
+function RulesEnd({hns}){
+    return (
+        <div>
+            <h2>Congrats, you learned it all</h2>
+            <button onClick={hns}>Let's do some exercises</button>
+        </div>
+    )
+}
+
+function RulesComponent({ hns }) {
+  const [currentRule, setCurrentRule] = useState(0);
+
+
+  const handleNextRule = () => {
+    setCurrentRule((prev) => prev + 1);
+  };
+
+  const rules = [
+    <FirstRule hns={handleNextRule} />,
+    <SecondRule hns={handleNextRule} />,
+    <ThirdRule hns={handleNextRule} />,
+    <RulesEnd hns={hns}/>
+  ];
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        padding: "30px 90px",
+        border: "2px dashed #A9DC97",
+        borderRadius: "20px",
+        gap: "20px",
+      }}
+    >
+      {/* Progress bar — only shown during actual rules */}
+      {currentRule > 0 && (
+        <div style={{ display: "flex", gap: "6px", width: "100%" }}>
+          {rules.map((_, index) => (
+            <div
+              key={index}
+              style={{
+                flex: 1,
+                height: "8px",
+                borderRadius: "10px",
+                background: index < currentRule ? "#626D58" : "#E8D9A0",
+                transition: "background 0.3s ease",
+              }}
+            />
+          ))}
+        </div>
+      )}
+
+      {currentRule === 0 ? (
+        <>
+          <h2
+            style={{
+              fontFamily: "Irish Grover",
+              fontSize: "22px",
+              textAlign: "center",
+              opacity: "0.7",
+              margin: 0,
+            }}
+          >
+            Let's start by learning some rules!
+          </h2>
+          <button
+            onClick={handleNextRule}
+            style={{
+              padding: "10px 20px",
+              border: "none",
+              borderRadius: "5px",
+              background: "#626D58",
+              color: "#FFF3CF",
+              cursor: "pointer",
+              fontSize: "16px",
+              fontFamily: "Irish Grover",
+            }}
+          >
+            Sure!
+          </button>
+        </>
+      ) : (
+        rules[currentRule - 1]
+      )}
     </div>
   );
 }
