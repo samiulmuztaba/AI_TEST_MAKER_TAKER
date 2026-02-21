@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CancelCross from "../../components/CancelCross";
 import Titles from "../../components/Titles";
 import UserBadge from "../../components/UserBadge";
@@ -89,7 +89,7 @@ function IntroComponent({ hns }) {
       >
         <p
           style={{
-              fontFamily: "Indie Flower",
+            fontFamily: "Indie Flower",
             fontSize: "17px",
             color: "#5C3D11",
             margin: 0,
@@ -127,7 +127,7 @@ function IntroComponent({ hns }) {
           fontSize: "16px",
           fontFamily: "Irish Grover",
         }}
-        >
+      >
         Let's learn this!
       </button>
     </div>
@@ -136,10 +136,454 @@ function IntroComponent({ hns }) {
 
 // ------------------------ Rules Components ------------------------
 function FirstRule({ hns }) {
+  const [showPolarity, setShowPolarity] = useState(false);
+    const [showExample, setShowExample] = useState(false)
+
+  // trigger it after the main diagram renders
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPolarity(true);
+      setShowExample(true)
+    }, 2000); // 2 seconds
+    return () => clearTimeout(timer); // cleanup
+  }, []);
   return (
-    <div>
-      <h2>First Rule</h2>
-      <button onClick={hns}>got it?</button>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "24px",
+      }}
+    >
+      <h2
+        style={{
+          fontFamily: "Irish Grover",
+          fontSize: "22px",
+          color: "#5C3D11",
+          opacity: 0.8,
+          margin: 0,
+        }}
+      >
+        The Core Mechanic
+      </h2>
+
+      {/* Diagram */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "18px",
+            justifyContent: "center",
+          }}
+        >
+          {/* Left: Subject + Verb */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <div style={{ display: "flex", gap: "8px" }}>
+              <div
+                style={{
+                  padding: "10px 18px",
+                  border: "2px solid #A9DC97",
+                  borderRadius: "10px",
+                  fontFamily: "Irish Grover",
+                  fontSize: "17px",
+                  color: "#FFF3CF",
+                  background: "#928644d2",
+                }}
+              >
+                Subject
+              </div>
+              <div
+                style={{
+                  padding: "10px 18px",
+                  border: "2px solid #F5D77E",
+                  borderRadius: "10px",
+                  fontFamily: "Irish Grover",
+                  fontSize: "17px",
+                  color: "#FFF3CF",
+                  background: "#928644",
+                }}
+              >
+                Verb
+              </div>
+            </div>
+            <p
+              style={{
+                fontFamily: "Irish Grover",
+                color: "#8b7c4e",
+                margin: "0",
+              }}
+            >
+              statement
+            </p>
+          </div>
+          {/* Arrow */}
+          <div
+            style={{ fontSize: "32px", color: "#626D58", fontWeight: "bold" }}
+          >
+            →
+          </div>
+
+          {/* Right: Verb + Subject (flipped order) */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <div style={{ display: "flex", gap: "8px" }}>
+              <div
+                style={{
+                  padding: "10px 18px",
+                  border: "2px solid #F5D77E",
+                  borderRadius: "10px",
+                  fontFamily: "Irish Grover",
+                  fontSize: "17px",
+                  color: "#FFF3CF",
+                  background: "#928644",
+                }}
+              >
+                Verb
+              </div>
+              <div
+                style={{
+                  padding: "10px 18px",
+                  border: "2px solid #A9DC97",
+                  borderRadius: "10px",
+                  fontFamily: "Irish Grover",
+                  fontSize: "17px",
+                  color: "#FFF3CF",
+                  background: "#928644d2",
+                }}
+              >
+                Subject
+              </div>
+            </div>
+            <p
+              style={{
+                fontFamily: "Irish Grover",
+                color: "#8b7c4e",
+                margin: "0",
+              }}
+            >
+              tag question
+            </p>
+          </div>
+        </div>
+        <p>
+          <i>
+            take the subject and verb, then place verb first and subject after
+            it in the tag part
+          </i>
+        </p>
+      </div>
+
+      {/* Polarity row */}
+      {showPolarity && (
+        <div
+          style={{
+            animation: "fadeIn 2.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "18px",
+              justifyContent: "center",
+              marginTop: "16px",
+            }}
+          >
+            {/* Left: Positive */}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <div
+                style={{
+                  padding: "10px 18px",
+                  border: "2px solid #A9DC97",
+                  borderRadius: "10px",
+                  fontFamily: "Irish Grover",
+                  fontSize: "17px",
+                  color: "#FFF3CF",
+                  background: "#5a8c4e",
+                }}
+              >
+                + positive
+              </div>
+              <p
+                style={{
+                  fontFamily: "Irish Grover",
+                  color: "#8b7c4e",
+                  margin: "0",
+                }}
+              >
+                statement
+              </p>
+            </div>
+
+            <div
+              style={{ fontSize: "32px", color: "#626D58", fontWeight: "bold" }}
+            >
+              →
+            </div>
+
+            {/* Right: Negative tag */}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <div
+                style={{
+                  padding: "10px 18px",
+                  border: "2px solid #e07070",
+                  borderRadius: "10px",
+                  fontFamily: "Irish Grover",
+                  fontSize: "17px",
+                  color: "#FFF3CF",
+                  background: "#b85c5c",
+                }}
+              >
+                − negative
+              </div>
+              <p
+                style={{
+                  fontFamily: "Irish Grover",
+                  color: "#8b7c4e",
+                  margin: "0",
+                }}
+              >
+                tag
+              </p>
+            </div>
+          </div>
+
+          {/* And the reverse */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "18px",
+              justifyContent: "center",
+              marginTop: "10px",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <div
+                style={{
+                  padding: "10px 18px",
+                  border: "2px solid #e07070",
+                  borderRadius: "10px",
+                  fontFamily: "Irish Grover",
+                  fontSize: "17px",
+                  color: "#FFF3CF",
+                  background: "#b85c5c",
+                }}
+              >
+                − negative
+              </div>
+              <p
+                style={{
+                  fontFamily: "Irish Grover",
+                  color: "#8b7c4e",
+                  margin: "0",
+                }}
+              >
+                statement
+              </p>
+            </div>
+
+            <div
+              style={{ fontSize: "32px", color: "#626D58", fontWeight: "bold" }}
+            >
+              →
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <div
+                style={{
+                  padding: "10px 18px",
+                  border: "2px solid #A9DC97",
+                  borderRadius: "10px",
+                  fontFamily: "Irish Grover",
+                  fontSize: "17px",
+                  color: "#FFF3CF",
+                  background: "#5a8c4e",
+                }}
+              >
+                + positive
+              </div>
+              <p
+                style={{
+                  fontFamily: "Irish Grover",
+                  color: "#8b7c4e",
+                  margin: "0",
+                }}
+              >
+                tag
+              </p>
+            </div>
+          </div>
+          <p>
+            <i>
+              Remember to change the polarity to the opposite of the statement's
+              verb
+            </i>
+          </p>
+        </div>
+      )}
+
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          marginTop: "8px",
+          animation: "fadeIn 2.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+        }}
+      >
+        <p
+          style={{
+            fontFamily: "Irish Grover",
+            color: "#8b7c4e",
+            margin: 0,
+            fontSize: "16px",
+          }}
+        >
+          For example:
+        </p>
+
+        {/* Statement */}
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", borderRadius: '10px', borderBottom: '2px dashed #ccc', padding: '2px 0px' }}>
+          <span
+            style={{
+              padding: "6px 14px",
+              borderRadius: "8px",
+              fontFamily: "Irish Grover",
+              fontSize: "18px",
+              color: "#FFF3CF",
+              background: "#928644d2",
+              border: "2px solid #A9DC97",
+            }}
+          >
+            He
+          </span>
+          <span
+            style={{
+              padding: "6px 14px",
+              borderRadius: "8px",
+              fontFamily: "Irish Grover",
+              fontSize: "18px",
+              color: "#FFF3CF",
+              background: "#928644",
+              border: "2px solid #F5D77E",
+            }}
+          >
+            is
+          </span>
+          <span
+            style={{
+              fontFamily: "Irish Grover",
+              fontSize: "18px",
+              color: "#5C3D11",
+            }}
+          >
+            honest
+          </span>
+        </div>
+
+        {/* Arrow */}
+        <div style={{ fontSize: "24px", color: "#626D58", fontWeight: "bold" }}>
+          →
+        </div>
+
+        {/* Tag */}
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", borderRadius: '10px', borderBottom: '2px dashed #ccc', padding: '2px 0px' }}>
+          <span
+            style={{
+              padding: "6px 14px",
+              borderRadius: "8px",
+              fontFamily: "Irish Grover",
+              fontSize: "18px",
+              color: "#FFF3CF",
+              background: "#b85c5c",
+              border: "2px solid #e07070",
+            }}
+          >
+            isn't
+          </span>
+          <span
+            style={{
+              padding: "6px 14px",
+              borderRadius: "8px",
+              fontFamily: "Irish Grover",
+              fontSize: "18px",
+              color: "#FFF3CF",
+              background: "#928644d2",
+              border: "2px solid #A9DC97",
+            }}
+          >
+            he
+          </span>
+          <span
+            style={{
+              fontFamily: "Irish Grover",
+              fontSize: "18px",
+              color: "#5C3D11",
+            }}
+          >
+            ?
+          </span>
+        </div>
+      </div>
+
+      <button
+        onClick={hns}
+        style={{
+          padding: "10px 20px",
+          border: "none",
+          borderRadius: "5px",
+          background: "#626D58",
+          color: "#FFF3CF",
+          cursor: "pointer",
+          fontSize: "16px",
+          fontFamily: "Irish Grover",
+        }}
+      >
+        Got it?
+      </button>
     </div>
   );
 }
@@ -162,18 +606,17 @@ function ThirdRule({ hns }) {
   );
 }
 
-function RulesEnd({hns}){
-    return (
-        <div>
-            <h2>Congrats, you learned it all</h2>
-            <button onClick={hns}>Let's do some exercises</button>
-        </div>
-    )
+function RulesEnd({ hns }) {
+  return (
+    <div>
+      <h2>Congrats, you learned it all</h2>
+      <button onClick={hns}>Let's do some exercises</button>
+    </div>
+  );
 }
 
 function RulesComponent({ hns }) {
   const [currentRule, setCurrentRule] = useState(0);
-
 
   const handleNextRule = () => {
     setCurrentRule((prev) => prev + 1);
@@ -183,7 +626,7 @@ function RulesComponent({ hns }) {
     <FirstRule hns={handleNextRule} />,
     <SecondRule hns={handleNextRule} />,
     <ThirdRule hns={handleNextRule} />,
-    <RulesEnd hns={hns}/>
+    <RulesEnd hns={hns} />,
   ];
 
   return (
