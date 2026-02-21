@@ -138,6 +138,7 @@ function IntroComponent({ hns }) {
 function FirstRule({ hns }) {
   const [step, setStep] = useState(0);
   const [hover, setHover] = useState(false);
+  const [unclear, setUnclear] = useState(false);
 
   const next = () => setStep((prev) => prev + 1);
 
@@ -460,6 +461,9 @@ function FirstRule({ hns }) {
           style={{
             animation: "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
             textAlign: "center",
+            display: 'flex',
+            flexDirection: 'column',
+            width: '50%'
           }}
         >
           <p
@@ -480,6 +484,23 @@ function FirstRule({ hns }) {
           >
             {hover ? "Yes!" : "Got it?"}
           </button>
+          {!unclear && (
+            <button
+              onClick={() => setUnclear(true)}
+              style={{
+                background: "transparent",
+                border: "none",
+                cursor: "pointer",
+                fontFamily: "Indie Flower",
+                fontSize: "15px",
+                color: "#8b7c4e",
+                textDecoration: "underline",
+                marginTop: "8px",
+              }}
+            >
+              still unclear?
+            </button>
+          )}
         </div>
       )}
     </div>
