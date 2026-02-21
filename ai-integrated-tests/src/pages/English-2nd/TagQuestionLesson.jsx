@@ -139,6 +139,17 @@ function FirstRule({ hns }) {
   const [step, setStep] = useState(0);
   const [hover, setHover] = useState(false);
   const [unclear, setUnclear] = useState(false);
+  const [unclearOption, setUnclearOption] = useState(null);
+  const clarifications = {
+    "I don't get the verb+subject flip":
+      "Think of it like this — in the sentence we have Subject then Verb. In the tag we just swap them: Verb then Subject. Like flipping a pair!",
+    "I don't understand polarity":
+      "Polarity just means positive or negative. 'He is honest' is positive — no 'not' anywhere. So the tag must be negative — 'isn't'. Always the opposite!",
+    "What even is a tag question?":
+      "It's just a mini question you stick at the end of a sentence to confirm something. Like saying 'right?' or 'তাই না?' in Bangla!",
+    "The example confused me":
+      "'He is honest, isn't he?' — 'He is honest' is the statement. 'isn't he?' is the tag. We took 'is' and 'He', swapped them, and flipped 'is' to 'isn't'. That's it!",
+  };
 
   const next = () => setStep((prev) => prev + 1);
 
@@ -461,9 +472,9 @@ function FirstRule({ hns }) {
           style={{
             animation: "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
             textAlign: "center",
-            display: 'flex',
-            flexDirection: 'column',
-            width: '50%'
+            display: "flex",
+            flexDirection: "column",
+            width: "50%",
           }}
         >
           <p
@@ -500,6 +511,52 @@ function FirstRule({ hns }) {
             >
               still unclear?
             </button>
+          )}
+          {unclear && (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "10px",
+                animation:
+                  "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+              }}
+            >
+              {Object.keys(clarifications).map((option) => (
+                <button
+                  key={option}
+                  onClick={() => setUnclearOption(option)}
+                  style={{
+                    background: "transparent",
+                    border: "1px solid #8b7c4e",
+                    borderRadius: "8px",
+                    padding: "6px 14px",
+                    fontFamily: "Indie Flower",
+                    fontSize: "15px",
+                    color: "#8b7c4e",
+                    cursor: "pointer",
+                  }}
+                >
+                  {option}
+                </button>
+              ))}
+              {unclearOption && (
+                <p
+                  style={{
+                    fontFamily: "Indie Flower",
+                    fontSize: "16px",
+                    color: "#5C3D11",
+                    textAlign: "center",
+                    maxWidth: "400px",
+                    animation:
+                      "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+                  }}
+                >
+                  💡 {clarifications[unclearOption]}
+                </p>
+              )}
+            </div>
           )}
         </div>
       )}
