@@ -149,7 +149,7 @@ function FirstRule({ hns }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       setStep(0);
-    }, 1000);
+    }, 500);
 
     return () => clearTimeout(timer);
   }, []);
