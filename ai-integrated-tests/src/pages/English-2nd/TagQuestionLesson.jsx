@@ -136,10 +136,19 @@ function IntroComponent({ hns }) {
 
 // ------------------------ Rules Components ------------------------
 function FirstRule({ hns }) {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(null);
   const [hover, setHover] = useState(false);
   const [unclear, setUnclear] = useState(false);
   const [unclearOption, setUnclearOption] = useState(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setStep(0);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const clarifications = {
     "I don't get the verb+subject flip":
       "Think of it like this — in the sentence we have Subject then Verb. In the tag we just swap them: Verb then Subject. Like flipping a pair!",
@@ -162,6 +171,7 @@ function FirstRule({ hns }) {
     cursor: "pointer",
     fontSize: "16px",
     fontFamily: "Irish Grover",
+    animation: "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
   };
 
   return (
@@ -173,6 +183,15 @@ function FirstRule({ hns }) {
         gap: "20px",
       }}
     >
+      <h2
+        style={{
+          color: "#626D58",
+          fontFamily: "Irish Grover",
+          margin: "0",
+        }}
+      >
+        Rule 1: The Core Mechanic
+      </h2>
       {unclear ? (
         <div
           style={{
@@ -235,28 +254,37 @@ function FirstRule({ hns }) {
           }}
         >
           {/* Step 0: Just show the full sentence */}
-          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <span
+          {step == 0 && (
+            <div
               style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
                 fontFamily: "Irish Grover",
-                fontSize: "22px",
-                color: "#5C3D11",
+                animation:
+                  "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
               }}
             >
-              He is honest,
-            </span>
-            <span
-              style={{
-                fontFamily: "Irish Grover",
-                fontSize: "22px",
-                color: "#5C3D11",
-                opacity: step >= 1 ? 1 : 0,
-                transition: "opacity 0.5s ease",
-              }}
-            >
-              isn't he?
-            </span>
-          </div>
+              <span
+                style={{
+                  fontSize: "22px",
+                  color: "#5C3D11",
+                }}
+              >
+                He is honest,
+              </span>
+              <span
+                style={{
+                  fontSize: "22px",
+                  color: "#5C3D11",
+                  opacity: step >= 1 ? 1 : 0,
+                  transition: "opacity 0.5s ease",
+                }}
+              >
+                isn't he?
+              </span>
+            </div>
+          )}
 
           {step === 0 && (
             <button onClick={next} style={btnStyle}>
