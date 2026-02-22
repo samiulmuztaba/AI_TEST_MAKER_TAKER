@@ -139,7 +139,12 @@ function FirstRule({ hns }) {
   const [step, setStep] = useState(null);
   const [hover, setHover] = useState(false);
   const [unclear, setUnclear] = useState(false);
+  const [clear, setClear] = useState(false);
   const [unclearOption, setUnclearOption] = useState(null);
+  const [practiceAnswers, setPracticeAnswers] = useState({
+    verb: "",
+    subject: "",
+  });
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -173,6 +178,313 @@ function FirstRule({ hns }) {
     fontFamily: "Irish Grover",
     animation: "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
   };
+
+  const practices = [
+    {
+      sentence: "He isn't honest",
+      isNegative: true,
+      correctVerb: "is",
+      correctSubject: "he",
+      explanation:
+        "The sentence was negative this time, so we flip to positive!",
+    },
+    {
+      sentence: "She is happy",
+      isNegative: false,
+      correctVerb: "isn't",
+      correctSubject: "she",
+      explanation: "Positive sentence — flip to negative. You're getting it!",
+    },
+    {
+      sentence: "Nobody came",
+      isNegative: false,
+      correctVerb: "did",
+      correctSubject: "they",
+      explanation: null, // tease — explained in next lesson
+      isTeaser: true,
+    },
+  ];
+
+  function PracticeBlock({ hns }) {
+    const [current, setCurrent] = useState(0);
+    const [answers, setAnswers] = useState({ verb: "", subject: "" });
+    const [submitted, setSubmitted] = useState(false);
+
+    const practice = practices[current];
+    const isCorrect =
+      answers.verb.toLowerCase() === practice.correctVerb &&
+      answers.subject.toLowerCase() === practice.correctSubject;
+
+    const handleNext = () => {
+      if (current + 1 < practices.length) {
+        setCurrent((prev) => prev + 1);
+        setAnswers({ verb: "", subject: "" });
+        setSubmitted(false);
+      } else {
+        hns();
+      }
+    };
+
+    const tokenStyle = (highlight) => ({
+      padding: "4px 12px",
+      borderRadius: "8px",
+      fontFamily: "Irish Grover",
+      fontSize: "18px",
+      color: "#FFF3CF",
+      background: highlight === "subject" ? "#928644d2" : "#928644",
+      border: `2px solid ${highlight === "subject" ? "#A9DC97" : "#F5D77E"}`,
+    });
+
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "20px",
+          animation: "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+        }}
+      >
+        <h2 style={{ fontFamily: "Irish Grover", color: "#626D58", margin: 0 }}>
+          {practice.isTeaser ? "Wait... can you do this one?" : "Try this one!"}
+        </h2>
+
+        {/* Sentence + input */}
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <span
+            style={{
+              fontFamily: "Irish Grover",
+              fontSize: "20px",
+              color: "#5C3D11",
+            }}
+          >
+            {practice.sentence},
+          </span>
+          <span style={{ fontSize: "20px" }}>→</span>
+          <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+            <input
+              type="text"
+              value={answers.verb}
+              onChange={(e) => setAnswers({ ...answers, verb: e.target.value })}
+              disabled={submitted}
+              placeholder="verb"
+              style={{
+                ...tokenStyle("verb"),
+                maxWidth: "70px",
+                border: submitted
+                  ? answers.verb.toLowerCase() === practice.correctVerb
+                    ? "2px solid #A9DC97"
+                    : "2px solid #b85c5c"
+                  : "2px solid #F5D77E",
+              }}
+            />
+            <input
+              type="text"
+              value={answers.subject}
+              onChange={(e) =>
+                setAnswers({ ...answers, subject: e.target.value })
+              }
+              disabled={submitted}
+              placeholder="sub"
+              style={{
+                ...tokenStyle("subject"),
+                maxWidth: "70px",
+                border: submitted
+                  ? answers.subject.toLowerCase() === practice.correctSubject
+                    ? "2px solid #A9DC97"
+                    : "2px solid #b85c5c"
+                  : "2px solid #A9DC97",
+              }}
+            />
+            <span
+              style={{
+                fontFamily: "Irish Grover",
+                fontSize: "20px",
+                color: "#5C3D11",
+              }}
+            >
+              ?
+            </span>
+          </div>
+        </div>
+
+        {/* Submit */}
+        {!submitted && (
+          <button
+            onClick={() => setSubmitted(true)}
+            disabled={!answers.verb || !answers.subject}
+            style={{
+              padding: "10px 20px",
+              border: "none",
+              borderRadius: "5px",
+              background: "#626D58",
+              color: "#FFF3CF",
+              cursor:
+                !answers.verb || !answers.subject ? "not-allowed" : "pointer",
+              opacity: !answers.verb || !answers.subject ? 0.5 : 1,
+              fontSize: "16px",
+              fontFamily: "Irish Grover",
+            }}
+          >
+            Check →
+          </button>
+        )}
+
+        {/* Result */}
+        {submitted && (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "16px",
+              animation:
+                "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+            }}
+          >
+            {isCorrect ? (
+              <>
+                <p
+                  style={{
+                    fontFamily: "Indie Flower",
+                    fontSize: "17px",
+                    color: "#5a8c4e",
+                    margin: 0,
+                  }}
+                >
+                  ✓ Correct!
+                </p>
+
+                {/* Visual explanation */}
+                {!practice.isTeaser && (
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: "8px",
+                    }}
+                  >
+                    <p
+                      style={{
+                        fontFamily: "Indie Flower",
+                        fontSize: "15px",
+                        color: "#5C3D11",
+                        margin: 0,
+                        textAlign: "center",
+                      }}
+                    >
+                      {practice.explanation}
+                    </p>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                      }}
+                    >
+                      <span
+                        style={{ ...tokenStyle("subject"), fontSize: "16px" }}
+                      >
+                        {practice.sentence.split(" ")[0]}
+                      </span>
+                      <span style={{ ...tokenStyle("verb"), fontSize: "16px" }}>
+                        {practice.isNegative ? "isn't" : "is"}
+                      </span>
+                      <span
+                        style={{
+                          fontFamily: "Irish Grover",
+                          fontSize: "16px",
+                          color: "#5C3D11",
+                        }}
+                      >
+                        {practice.sentence.split(" ")[2]}
+                      </span>
+                    </div>
+                    <div style={{ fontSize: "20px", color: "#626D58" }}>↓</div>
+                    <div style={{ display: "flex", gap: "8px" }}>
+                      <span style={{ ...tokenStyle("verb"), fontSize: "16px" }}>
+                        {practice.correctVerb}
+                      </span>
+                      <span
+                        style={{ ...tokenStyle("subject"), fontSize: "16px" }}
+                      >
+                        {practice.correctSubject}
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                {practice.isTeaser && (
+                  <p
+                    style={{
+                      fontFamily: "Indie Flower",
+                      fontSize: "15px",
+                      color: "#8b7c4e",
+                      textAlign: "center",
+                      maxWidth: "360px",
+                      fontStyle: "italic",
+                    }}
+                  >
+                    Hmm... "Nobody" is tricky. Why "did they" and not "didn't
+                    nobody"? That's Rule 2. 👀
+                  </p>
+                )}
+
+                <button
+                  onClick={handleNext}
+                  style={{
+                    padding: "10px 20px",
+                    border: "none",
+                    borderRadius: "5px",
+                    background: "#626D58",
+                    color: "#FFF3CF",
+                    cursor: "pointer",
+                    fontSize: "16px",
+                    fontFamily: "Irish Grover",
+                  }}
+                >
+                  {current + 1 < practices.length ? "Next →" : "On to Rule 2 →"}
+                </button>
+              </>
+            ) : (
+              <>
+                <p
+                  style={{
+                    fontFamily: "Indie Flower",
+                    fontSize: "17px",
+                    color: "#b85c5c",
+                    margin: 0,
+                  }}
+                >
+                  ✗ Not quite. Remember — take verb + subject, flip the
+                  polarity!
+                </p>
+                <button
+                  onClick={() => {
+                    setAnswers({ verb: "", subject: "" });
+                    setSubmitted(false);
+                  }}
+                  style={{
+                    padding: "10px 20px",
+                    border: "none",
+                    borderRadius: "5px",
+                    background: "#626D58",
+                    color: "#FFF3CF",
+                    cursor: "pointer",
+                    fontSize: "16px",
+                    fontFamily: "Irish Grover",
+                  }}
+                >
+                  Try again
+                </button>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div
@@ -244,6 +556,8 @@ function FirstRule({ hns }) {
             {hover ? "Yes!" : "Got it now?"}
           </button>
         </div>
+      ) : clear ? (
+        <PracticeBlock hns={hns} />
       ) : (
         <div
           style={{
@@ -583,7 +897,10 @@ function FirstRule({ hns }) {
               <button
                 onMouseEnter={() => setHover(true)}
                 onMouseLeave={() => setHover(false)}
-                onClick={hns}
+                onClick={() => {
+                  setClear(true);
+                  setHover(false);
+                }}
                 style={{ ...btnStyle, marginTop: "12px" }}
               >
                 {hover ? "Yes!" : "Got it?"}
