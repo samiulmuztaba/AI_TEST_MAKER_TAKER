@@ -173,6 +173,60 @@ function FirstRule({ hns }) {
         gap: "20px",
       }}
     >
+      {unclear ? (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "10px",
+                animation:
+                  "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+              }}
+            >
+              {Object.keys(clarifications).map((option) => (
+                <button
+                  key={option}
+                  onClick={() => setUnclearOption(option)}
+                  style={{
+                    background: unclearOption == option ? "#626D58" : "transparent",
+                    border: unclearOption == option ? "none" : "1px solid #8b7c4e",
+                    borderRadius: "8px",
+                    padding: "6px 14px",
+                    fontFamily: "Indie Flower",
+                    fontSize: "15px",
+                    color: unclearOption == option ? "#FFF3CF" : "#8b7c4e",
+                    cursor: "pointer",
+                  }}
+                >
+                  {option}
+                </button>
+              ))}
+              {unclearOption && (
+                <p
+                  style={{
+                    fontFamily: "Indie Flower",
+                    fontSize: "16px",
+                    color: "#5C3D11",
+                    textAlign: "center",
+                    maxWidth: "400px",
+                    animation:
+                      "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+                  }}
+                >
+                  💡 {clarifications[unclearOption]}
+                </p>
+              )}
+            </div>
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "12px",
+              }}
+            >
       {/* Step 0: Just show the full sentence */}
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
         <span
@@ -254,15 +308,6 @@ function FirstRule({ hns }) {
             Now look closely — where did <strong>"isn't he"</strong> come from?
           </p>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <span
-              style={{
-                fontFamily: "Irish Grover",
-                fontSize: "18px",
-                color: "#5C3D11",
-              }}
-            >
-              He
-            </span>
             {/* highlighted */}
             <span
               style={{
@@ -541,25 +586,12 @@ function FirstRule({ hns }) {
                   {option}
                 </button>
               ))}
-              {unclearOption && (
-                <p
-                  style={{
-                    fontFamily: "Indie Flower",
-                    fontSize: "16px",
-                    color: "#5C3D11",
-                    textAlign: "center",
-                    maxWidth: "400px",
-                    animation:
-                      "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
-                  }}
-                >
-                  💡 {clarifications[unclearOption]}
-                </p>
-              )}
             </div>
           )}
         </div>
       )}
+            </div>
+          )}
     </div>
   );
 }
