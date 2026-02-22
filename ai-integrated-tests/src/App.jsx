@@ -9,6 +9,7 @@ import Registration from "./pages/Registration";
 import LandingPage from "./pages/LandingPage";
 import Profile from "./pages/Profile";
 import TagQuestionLesson from "./pages/English-2nd/TagQuestionLesson";
+import LearnEnglish2ndRouter from "./pages/LearnEnglish2ndRouter";
 
 function App() {
   const user = JSON.parse(localStorage.getItem('user'));
@@ -28,6 +29,7 @@ function App() {
         <Route path="/learn/english-2nd/tag-questions" element={<TagQuestionLesson/>} />
         <Route path="/generating/:percentage" element={<LoadingAnimation />} />
         <Route path="/benanalysis" element={<BenAnalysis />} />
+        <Route path="/learn/english-2nd/:topic/:lesson?" element={<LearnEnglish2ndRouter />} />
       </Routes>
     </BrowserRouter>
   );
