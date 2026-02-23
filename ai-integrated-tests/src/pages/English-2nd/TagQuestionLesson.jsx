@@ -1096,6 +1096,149 @@ function SecondRule({ hns }) {
               </button>
             </div>
           )}
+          {step === 3 && (
+            <div style={{
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+                gap: "20px",
+                fontFamily: "Irish Grover",
+                animation:
+                  "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+              }}>
+              <span style={{ fontSize: "22px", color: "#5C3D11" }}>
+                Soooo, let's go to the first example
+              </span>
+              <div style={{
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+                gap: "20px",
+                animation:
+                  "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+                background: "#FFF0C2",
+                border: "2px solid #F5D77E",
+                borderRadius: "14px",
+                padding: "16px 24px",
+                maxWidth: "460px",
+                textAlign: "center",
+                boxShadow: "2px 2px 0px #F0C040",
+              }}>
+                <span>We'll use the pronoun:</span>
+                
+                <div style={{
+                  display: 'flex',
+                  gap: '8px',
+                  alignItems: 'center'
+                }}><span
+                  style={{
+                    padding: "4px 12px",
+                    borderRadius: "8px",
+                    fontFamily: "Irish Grover",
+                    fontSize: "18px",
+                    color: "#FFF3CF",
+                    background: "#928644d2",
+                    border: "2px solid #A9DC97",
+                  }}
+                >
+                  Tim
+                </span>
+                →
+                <span
+                  style={{
+                    padding: "4px 12px",
+                    borderRadius: "8px",
+                    fontFamily: "Irish Grover",
+                    fontSize: "18px",
+                    color: "#FFF3CF",
+                    background: "#928644d2",
+                    border: "2px solid #A9DC97",
+                  }}
+                >
+                  he
+                </span></div>
+              </div>
+              <span style={{ fontSize: "22px", color: "#5C3D11" }}>
+                It'll be like this:
+              </span>
+              <div style={{
+                  display: 'flex',
+                  gap: '8px',
+                  alignItems: 'center'
+                }}><span
+                  style={{
+                    padding: "4px 12px",
+                    borderRadius: "8px",
+                    fontFamily: "Irish Grover",
+                    fontSize: "18px",
+                    color: "#FFF3CF",
+                    background: "#928644d2",
+                    border: "2px solid #A9DC97",
+                  }}
+                >
+                  Tim
+                </span>
+                <span
+                  style={{
+                    padding: "4px 12px",
+                    borderRadius: "8px",
+                    fontFamily: "Irish Grover",
+                    fontSize: "18px",
+                    color: "#FFF3CF",
+                    background: "#928644",
+                    border: "2px solid #F5D77E",
+                  }}
+                >
+                  likes
+                </span>
+                <span>→</span>
+                <span
+                  style={{
+                    padding: "4px 12px",
+                    borderRadius: "8px",
+                    fontFamily: "Irish Grover",
+                    fontSize: "18px",
+                    color: "#FFF3CF",
+                    background: "#928644",
+                    border: "2px solid #F5D77E",
+                  }}
+                >
+                  doesn't
+                </span>
+                <span
+                  style={{
+                    padding: "4px 12px",
+                    borderRadius: "8px",
+                    fontFamily: "Irish Grover",
+                    fontSize: "18px",
+                    color: "#FFF3CF",
+                    background: "#928644d2",
+                    border: "2px solid #A9DC97",
+                  }}
+                >
+                  he
+                </span>?</div>
+                <button
+                style={{
+                  padding: "10px 20px",
+                  border: "none",
+                  borderRadius: "5px",
+                  background: hover ? "#8b7c4e" : "#626D58",
+                  color: "#FFF3CF",
+                  cursor: "pointer",
+                  fontSize: "16px",
+                  fontFamily: "Irish Grover",
+                  animation:
+                    "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+                }}
+                onMouseEnter={() => setHover(true)}
+                onMouseLeave={() => setHover(false)}
+                onClick={() => setStep(1)}
+              >
+                {hover ? "Yeah!" : "Got it?"}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
