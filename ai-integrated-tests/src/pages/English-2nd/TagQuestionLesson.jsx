@@ -139,6 +139,7 @@ function PracticeBlock({ hns, practices }) {
   const [current, setCurrent] = useState(0);
   const [answers, setAnswers] = useState({ verb: "", subject: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [showTeaser, setShowTeaser] = useState(false);
 
   const practice = practices[current];
   const isCorrect =
@@ -151,7 +152,7 @@ function PracticeBlock({ hns, practices }) {
       setAnswers({ verb: "", subject: "" });
       setSubmitted(false);
     } else {
-      hns();
+      setShowTeaser(true);
     }
   };
 
@@ -268,8 +269,7 @@ function PracticeBlock({ hns, practices }) {
             flexDirection: "column",
             alignItems: "center",
             gap: "16px",
-            animation:
-              "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+            animation: "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
           }}
         >
           {isCorrect ? (
@@ -313,7 +313,9 @@ function PracticeBlock({ hns, practices }) {
                       gap: "8px",
                     }}
                   >
-                    <span style={{ ...tokenStyle("subject"), fontSize: "16px" }}>
+                    <span
+                      style={{ ...tokenStyle("subject"), fontSize: "16px" }}
+                    >
                       {practice.sentence.split(" ")[0]}
                     </span>
                     <span style={{ ...tokenStyle("verb"), fontSize: "16px" }}>
@@ -334,30 +336,56 @@ function PracticeBlock({ hns, practices }) {
                     <span style={{ ...tokenStyle("verb"), fontSize: "16px" }}>
                       {practice.correctVerb}
                     </span>
-                    <span style={{ ...tokenStyle("subject"), fontSize: "16px" }}>
+                    <span
+                      style={{ ...tokenStyle("subject"), fontSize: "16px" }}
+                    >
                       {practice.correctSubject}
                     </span>
                   </div>
                 </div>
               )}
 
-              {practice.isTeaser && (
-                <p
+              {showTeaser && (
+                <div
                   style={{
-                    fontFamily: "Indie Flower",
-                    fontSize: "15px",
-                    color: "#8b7c4e",
+                    animation:
+                      "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
                     textAlign: "center",
-                    maxWidth: "360px",
-                    fontStyle: "italic",
                   }}
                 >
-                  Hmm... "Nobody" is tricky. Why "did they" and not "didn't
-                  nobody"? That's Rule 2. 👀
-                </p>
+                  <p
+                    style={{
+                      fontFamily: "Indie Flower",
+                      fontSize: "15px",
+                      color: "#8b7c4e",
+                      fontStyle: "italic",
+                      maxWidth: "360px",
+                    }}
+                  >
+                    👀 Quick thought — what about <strong>"Nobody came"</strong>
+                    ? Why would the tag be <strong>"did they?"</strong> and not{" "}
+                    <strong>"didn't nobody?"</strong> That's Rule 2...
+                  </p>
+                  <button
+                    onClick={hns}
+                    style={{
+                      padding: "10px 20px",
+                      border: "none",
+                      borderRadius: "5px",
+                      background: "#626D58",
+                      color: "#FFF3CF",
+                      cursor: "pointer",
+                      fontSize: "16px",
+                      fontFamily: "Irish Grover",
+                      marginTop: "12px",
+                    }}
+                  >
+                    On to Rule 2 →
+                  </button>
+                </div>
               )}
 
-              <button
+              {!showTeaser && <button
                 onClick={handleNext}
                 style={{
                   padding: "10px 20px",
@@ -370,8 +398,8 @@ function PracticeBlock({ hns, practices }) {
                   fontFamily: "Irish Grover",
                 }}
               >
-                {current + 1 < practices.length ? "Next →" : "On to Rule 2 →"}
-              </button>
+                Next →
+              </button>}
             </>
           ) : (
             <>
@@ -443,7 +471,8 @@ function FirstRule({ hns }) {
       isNegative: true,
       correctVerb: "is",
       correctSubject: "he",
-      explanation: "The sentence was negative this time, so we flip to positive!",
+      explanation:
+        "The sentence was negative this time, so we flip to positive!",
     },
     {
       sentence: "She is happy",
@@ -451,14 +480,6 @@ function FirstRule({ hns }) {
       correctVerb: "isn't",
       correctSubject: "she",
       explanation: "Positive sentence — flip to negative. You're getting it!",
-    },
-    {
-      sentence: "Nobody came",
-      isNegative: false,
-      correctVerb: "did",
-      correctSubject: "they",
-      explanation: null,
-      isTeaser: true,
     },
   ];
 
@@ -504,7 +525,8 @@ function FirstRule({ hns }) {
               key={option}
               onClick={() => setUnclearOption(option)}
               style={{
-                background: unclearOption === option ? "#626D58" : "transparent",
+                background:
+                  unclearOption === option ? "#626D58" : "transparent",
                 border: unclearOption === option ? "none" : "1px solid #8b7c4e",
                 borderRadius: "8px",
                 padding: "6px 14px",
@@ -639,7 +661,9 @@ function FirstRule({ hns }) {
                 Now look closely — where did <strong>"isn't he"</strong> come
                 from?
               </p>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "8px" }}
+              >
                 <span
                   style={{
                     padding: "4px 12px",
@@ -747,10 +771,12 @@ function FirstRule({ hns }) {
                   textAlign: "center",
                 }}
               >
-                But wait — <strong>"is"</strong> became{" "}
-                <strong>"isn't"</strong>. Why?
+                But wait — <strong>"is"</strong> became <strong>"isn't"</strong>
+                . Why?
               </p>
-              <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "16px" }}
+              >
                 <div
                   style={{
                     display: "flex",
@@ -784,7 +810,11 @@ function FirstRule({ hns }) {
                   </p>
                 </div>
                 <span
-                  style={{ fontSize: "28px", color: "#626D58", fontWeight: "bold" }}
+                  style={{
+                    fontSize: "28px",
+                    color: "#626D58",
+                    fontWeight: "bold",
+                  }}
                 >
                   →
                 </span>
