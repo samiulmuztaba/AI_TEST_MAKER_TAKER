@@ -1018,7 +1018,7 @@ function SecondRule({ hns }) {
               </span>
               {step === 1 && (
                 <button
-                  onClick={() => setStep(2)}
+                  onClick={() => { setStep(2); setHover(false); }}
                   style={{
                     padding: "10px 20px",
                     border: "none",
