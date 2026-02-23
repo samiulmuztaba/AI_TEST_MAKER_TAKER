@@ -385,21 +385,23 @@ function PracticeBlock({ hns, practices }) {
                 </div>
               )}
 
-              {!showTeaser && <button
-                onClick={handleNext}
-                style={{
-                  padding: "10px 20px",
-                  border: "none",
-                  borderRadius: "5px",
-                  background: "#626D58",
-                  color: "#FFF3CF",
-                  cursor: "pointer",
-                  fontSize: "16px",
-                  fontFamily: "Irish Grover",
-                }}
-              >
-                Next →
-              </button>}
+              {!showTeaser && (
+                <button
+                  onClick={handleNext}
+                  style={{
+                    padding: "10px 20px",
+                    border: "none",
+                    borderRadius: "5px",
+                    background: "#626D58",
+                    color: "#FFF3CF",
+                    cursor: "pointer",
+                    fontSize: "16px",
+                    fontFamily: "Irish Grover",
+                  }}
+                >
+                  Next →
+                </button>
+              )}
             </>
           ) : (
             <>
@@ -932,10 +934,170 @@ function FirstRule({ hns }) {
 }
 
 function SecondRule({ hns }) {
+  const [step, setStep] = useState(null);
+  const [hover, setHover] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setStep(0);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
   return (
-    <div>
-      <h2>Second Rule</h2>
-      <button onClick={hns}>got it?</button>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: "8px",
+      }}
+    >
+      <h2 style={{ color: "#626D58", fontFamily: "Irish Grover", margin: "0" }}>
+        Rule 2: Pronouns
+      </h2>
+      <div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "12px",
+          }}
+        >
+          {/* Step 0: Just show the full sentence */}
+          {step === 0 && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+                gap: "20px",
+                fontFamily: "Irish Grover",
+                animation:
+                  "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+              }}
+            >
+              <span style={{ fontSize: "22px", color: "#5C3D11" }}>
+                Tim likes coding, doesn't Tim?
+              </span>
+              <button
+                style={{
+                  padding: "10px 20px",
+                  border: "none",
+                  borderRadius: "5px",
+                  background: hover ? "#8b7c4e" : "#626D58",
+                  color: "#FFF3CF",
+                  cursor: "pointer",
+                  fontSize: "16px",
+                  fontFamily: "Irish Grover",
+                  animation:
+                    "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+                }}
+                onMouseEnter={() => setHover(true)}
+                onMouseLeave={() => setHover(false)}
+                onClick={() => setStep(1)}
+              >
+                {hover ? "Yeah.." : "🤔 Suspicious...?"}
+              </button>
+            </div>
+          )}
+          {(step >= 1 && step <=2) && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+                gap: "20px",
+                fontFamily: "Irish Grover",
+                animation:
+                  "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+              }}
+            >
+              <span style={{ fontSize: "22px", color: "#5C3D11" }}>
+                Wait a minute... this sounds kinda off, doesn't it?
+              </span>
+              {step === 1 && (
+                <button
+                  onClick={() => setStep(2)}
+                  style={{
+                    padding: "10px 20px",
+                    border: "none",
+                    borderRadius: "5px",
+                    background: "#626D58",
+                    color: "#FFF3CF",
+                    cursor: "pointer",
+                    fontSize: "16px",
+                    fontFamily: "Irish Grover",
+                    animation:
+                      "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+                  }}
+                >
+                  Heyy wait, "it"! 👆
+                </button>
+              )}
+            </div>
+          )}
+          {step === 2 && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+                gap: "12px",
+                animation:
+                  "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+                background: "#FFF0C2",
+                border: "2px solid #F5D77E",
+                borderRadius: "14px",
+                padding: "16px 24px",
+                maxWidth: "460px",
+                textAlign: "center",
+                boxShadow: "2px 2px 0px #F0C040",
+              }}
+            >
+              <span style={{ fontSize: "28px" }}>💡</span>
+              <span
+                style={{
+                  fontSize: "18px",
+                  color: "#5C3D11",
+                  fontFamily: "Indie Flower",
+                  lineHeight: "1.7",
+                }}
+              >
+                Heyy, we just used a pronoun —{" "}
+                <strong
+                  style={{
+                    color: "#2D6A1F",
+                    background: "#A9DC97",
+                    padding: "2px 8px",
+                    borderRadius: "6px",
+                  }}
+                >
+                  "it"
+                </strong>
+                ! In tags we use pronouns instead of repeating the subject.
+              </span>
+              <button
+                onClick={() => setStep(3)}
+                style={{
+                  padding: "10px 20px",
+                  border: "none",
+                  borderRadius: "5px",
+                  background: "#626D58",
+                  color: "#FFF3CF",
+                  cursor: "pointer",
+                  fontSize: "16px",
+                  fontFamily: "Irish Grover",
+                  animation:
+                    "fadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+                }}
+              >
+                Oooh...
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
