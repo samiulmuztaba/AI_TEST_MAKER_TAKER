@@ -1227,7 +1227,7 @@ function SecondRule({ hns }) {
                 }}
                 onMouseEnter={() => setHover(true)}
                 onMouseLeave={() => setHover(false)}
-                onClick={() => setStep(1)}
+                onClick={() => setStep(4)}
               >
                 {hover ? "Yeah!" : "Got it?"}
               </button>
