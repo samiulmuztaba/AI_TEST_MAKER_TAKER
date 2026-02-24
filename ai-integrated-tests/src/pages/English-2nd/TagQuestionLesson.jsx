@@ -197,7 +197,6 @@ function PracticeBlock({ hns, practices }) {
             type="text"
             value={answers.verb}
             onChange={(e) => setAnswers({ ...answers, verb: e.target.value })}
-            disabled={submitted}
             placeholder="verb"
             style={{
               ...tokenStyle("verb"),
@@ -215,7 +214,6 @@ function PracticeBlock({ hns, practices }) {
             onChange={(e) =>
               setAnswers({ ...answers, subject: e.target.value })
             }
-            disabled={submitted}
             placeholder="sub"
             style={{
               ...tokenStyle("subject"),
@@ -243,7 +241,6 @@ function PracticeBlock({ hns, practices }) {
       {!submitted && (
         <button
           onClick={() => setSubmitted(true)}
-          disabled={!answers.verb || !answers.subject}
           style={{
             padding: "10px 20px",
             border: "none",
@@ -416,10 +413,7 @@ function PracticeBlock({ hns, practices }) {
                 ✗ Not quite. Remember — take verb + subject, flip the polarity!
               </p>
               <button
-                onClick={() => {
-                  setAnswers({ verb: "", subject: "" });
-                  setSubmitted(false);
-                }}
+                          onClick={() => setSubmitted(true)}
                 style={{
                   padding: "10px 20px",
                   border: "none",
@@ -431,7 +425,7 @@ function PracticeBlock({ hns, practices }) {
                   fontFamily: "Irish Grover",
                 }}
               >
-                Try again
+                Check again
               </button>
             </>
           )}
