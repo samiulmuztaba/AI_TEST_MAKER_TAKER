@@ -135,7 +135,7 @@ function IntroComponent({ hns }) {
 }
 
 // ------------------------ Shared PracticeBlock ------------------------
-function PracticeBlock({ hns, practices }) {
+function PracticeBlock({ hns, practices, teaserHTML }) {
   const [current, setCurrent] = useState(0);
   const [answers, setAnswers] = useState({ verb: "", subject: "" });
   const [submitted, setSubmitted] = useState(false);
@@ -177,7 +177,7 @@ function PracticeBlock({ hns, practices }) {
       }}
     >
       <h2 style={{ fontFamily: "Irish Grover", color: "#626D58", margin: 0 }}>
-        {practice.isTeaser ? "Wait... can you do this one?" : "Try this one!"}
+        Can you do this one?
       </h2>
 
       {/* Sentence + input */}
@@ -359,9 +359,7 @@ function PracticeBlock({ hns, practices }) {
                       maxWidth: "360px",
                     }}
                   >
-                    👀 Quick thought — what about <strong>"Nobody came"</strong>
-                    ? Why would the tag be <strong>"did they?"</strong> and not{" "}
-                    <strong>"didn't nobody?"</strong> That's Rule 2...
+                    {teaserHTML}
                   </p>
                   <button
                     onClick={hns}
@@ -479,6 +477,10 @@ function FirstRule({ hns }) {
     },
   ];
 
+  const teaser = <span> 👀 Quick thought — what about <strong>"Nobody came"</strong>
+                    ? Why would the tag be <strong>"did they?"</strong> and not{" "}
+                    <strong>"didn't nobody?"</strong> That's Rule 2...</span>
+
   const next = () => setStep((prev) => prev + 1);
 
   const btnStyle = {
@@ -560,7 +562,7 @@ function FirstRule({ hns }) {
           </button>
         </div>
       ) : clear ? (
-        <PracticeBlock hns={hns} practices={practices} />
+        <PracticeBlock hns={hns} practices={practices} teaserHTML={teaser} />
       ) : (
         <div
           style={{
